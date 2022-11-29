@@ -6,6 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Movie
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Tv
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -114,22 +118,22 @@ fun BottomBar(
         val navigationItems = listOf(
             NavigationItem(
                 title = stringResource(id = R.string.home),
-                icon = Icons.Rounded.Home,
+                icon = Icons.Outlined.Home,
                 screen = Screen.Home,
             ),
             NavigationItem(
                 title = stringResource(id = R.string.movie),
-                icon = Icons.Rounded.Movie,
+                icon = Icons.Outlined.Movie,
                 screen = Screen.Movie,
             ),
             NavigationItem(
                 title = stringResource(id = R.string.series),
-                icon = Icons.Rounded.Tv,
+                icon = Icons.Outlined.Tv,
                 screen = Screen.Series,
             ),
             NavigationItem(
                 title = stringResource(id = R.string.profile),
-                icon = Icons.Rounded.Person,
+                icon = Icons.Outlined.Person,
                 screen = Screen.Profile,
             )
         )
