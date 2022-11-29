@@ -55,13 +55,13 @@ fun MovieApp(
             composable(Screen.Home.route){
                 HomeScreen()
             }
-            composable(Screen.Home.route){
+            composable(Screen.Movie.route){
                 MovieScreen()
             }
-            composable(Screen.Home.route){
+            composable(Screen.Series.route){
                 SeriesScreen()
             }
-            composable(Screen.Home.route){
+            composable(Screen.Profile.route){
                 ProfileScreen()
             }
         }
