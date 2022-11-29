@@ -41,7 +41,7 @@ fun MovieApp(
     Scaffold(
         topBar = { TopBar() },
         bottomBar = {
-            if (currentRoute != Screen.Detail.route) {
+            if (currentRoute != Screen.Detail.route && currentRoute != Screen.Watchlist.route) {
                 BottomBar(navController = navController)
             }
         },
@@ -52,16 +52,16 @@ fun MovieApp(
             startDestination = Screen.Home.route,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route){
+            composable(Screen.Home.route) {
                 HomeScreen()
             }
-            composable(Screen.Movie.route){
+            composable(Screen.Movie.route) {
                 MovieScreen()
             }
-            composable(Screen.Series.route){
+            composable(Screen.Series.route) {
                 SeriesScreen()
             }
-            composable(Screen.Profile.route){
+            composable(Screen.Profile.route) {
                 ProfileScreen()
             }
         }
@@ -120,7 +120,7 @@ fun BottomBar(
             NavigationItem(
                 title = stringResource(id = R.string.movie),
                 icon = Icons.Rounded.Movie,
-                screen = Screen.Home,
+                screen = Screen.Movie,
             ),
             NavigationItem(
                 title = stringResource(id = R.string.series),
@@ -130,7 +130,7 @@ fun BottomBar(
             NavigationItem(
                 title = stringResource(id = R.string.profile),
                 icon = Icons.Rounded.Person,
-                screen = Screen.Home,
+                screen = Screen.Profile,
             )
         )
 
