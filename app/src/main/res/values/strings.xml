@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">MovieAppCompose</string>
     <string name="top_bar_title">Comp Movie</string>
+    <string name="search_desc">Search Movie</string>
+    <string name="home">Home</string>
+    <string name="movie">Movie</string>
+    <string name="series">Series</string>
+    <string name="watchlist">Watchlist</string>
+    <string name="profile">Profile</string>
+    <string name="detail">Detail</string>
 </resources>

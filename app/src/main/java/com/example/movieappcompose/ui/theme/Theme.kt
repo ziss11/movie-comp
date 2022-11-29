@@ -10,12 +10,18 @@ private val DarkColorPalette = darkColors(
     primary = Black,
     secondary = Purple,
     background = Black,
+    onPrimary = White,
+    onSecondary = White,
+    onBackground = White,
 )
 
 private val LightColorPalette = lightColors(
     primary = White,
     secondary = Purple,
     background = White,
+    onPrimary = Black,
+    onSecondary = White,
+    onBackground = Black,
 )
 
 @Composable
