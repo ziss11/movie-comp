@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MovieAppCompose</string>
+    <string name="top_bar_title">Comp Movie</string>
 </resources>
