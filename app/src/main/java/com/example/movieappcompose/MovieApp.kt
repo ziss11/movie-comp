@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -111,59 +112,71 @@ fun BottomBar(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val navigationItems = listOf(
+        NavigationItem(
+            title = stringResource(id = R.string.home),
+            icon = Icons.Outlined.Home,
+            screen = Screen.Home,
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.movie),
+            icon = Icons.Outlined.Movie,
+            screen = Screen.Movie,
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.series),
+            icon = Icons.Outlined.Tv,
+            screen = Screen.Series,
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.profile),
+            icon = Icons.Outlined.Person,
+            screen = Screen.Profile,
+        )
+    )
+
+    BottomNavigation(modifier = modifier.background(MaterialTheme.colors.background)) {
+        navigationItems.map { item ->
+            BottomBarItem(
+                label = item.title, icon = item.icon,
+                route = item.screen.route,
+                navController = navController,
+            )
+        }
+    }
+}
+
+@Composable
+fun RowScope.BottomBarItem(
+    label: String,
+    icon: ImageVector,
+    route: String,
+    navController: NavHostController
+) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    BottomNavigation(modifier = modifier) {
-        val navigationItems = listOf(
-            NavigationItem(
-                title = stringResource(id = R.string.home),
-                icon = Icons.Outlined.Home,
-                screen = Screen.Home,
-            ),
-            NavigationItem(
-                title = stringResource(id = R.string.movie),
-                icon = Icons.Outlined.Movie,
-                screen = Screen.Movie,
-            ),
-            NavigationItem(
-                title = stringResource(id = R.string.series),
-                icon = Icons.Outlined.Tv,
-                screen = Screen.Series,
-            ),
-            NavigationItem(
-                title = stringResource(id = R.string.profile),
-                icon = Icons.Outlined.Person,
-                screen = Screen.Profile,
+    BottomNavigationItem(
+        icon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = label,
             )
-        )
-
-        BottomNavigation {
-            navigationItems.map { item ->
-                BottomNavigationItem(
-                    icon = {
-                        Icon(
-                            imageVector = item.icon,
-                            contentDescription = item.title,
-                        )
-                    },
-                    label = { Text(text = item.title) },
-                    unselectedContentColor = Grey,
-                    selectedContentColor = MaterialTheme.colors.secondary,
-                    selected = currentRoute == item.screen.route,
-                    onClick = {
-                        navController.navigate(item.screen.route) {
-                            popUpTo(navController.graph.findStartDestination().id) {
-                                saveState = true
-                            }
-                            restoreState = true
-                            launchSingleTop = true
-                        }
-                    },
-                )
+        },
+        label = { Text(text = label) },
+        unselectedContentColor = Grey,
+        selectedContentColor = MaterialTheme.colors.secondary,
+        selected = currentRoute == route,
+        onClick = {
+            navController.navigate(route) {
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                restoreState = true
+                launchSingleTop = true
             }
-        }
-    }
+        },
+    )
 }
 
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
