@@ -1,3 +1,3 @@
-# movie-compose
+# movie-comp
 
 Movie App using Jetpack Compose
