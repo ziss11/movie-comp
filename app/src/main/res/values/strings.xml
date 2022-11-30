@@ -1,10 +1,15 @@
 <resources>
     <string name="app_name">MovieAppCompose</string>
-    <string name="top_bar_title">Comp Movie</string>
-    <string name="search_desc">Search Movie</string>
+    <string name="movie_top_bar_title">Comp Movie</string>
+    <string name="about_top_bar_title">About</string>
     <string name="movie">Movie</string>
-    <string name="series">Series</string>
     <string name="watchlist">Watchlist</string>
-    <string name="profile">Profile</string>
-    <string name="detail">Detail</string>
+    <string name="search_desc">Search Movie</string>
+    <string name="movie_desc">Movie Page</string>
+    <string name="watchlist_desc">Watchlist Page</string>
+    <string name="about_desc">About Page</string>
+    <string name="detail_desc">Detail Page</string>
+    <string name="profile_desc">Profile Image</string>
+    <string name="my_name">Abdul Azis</string>
+    <string name="my_email">abdul.azizz1108@gmail.com</string>
 </resources>

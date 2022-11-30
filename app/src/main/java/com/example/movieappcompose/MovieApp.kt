@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -25,7 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieappcompose.ui.navigation.NavigationItem
 import com.example.movieappcompose.ui.navigation.Screen
-import com.example.movieappcompose.ui.screen.*
+import com.example.movieappcompose.ui.pages.*
 import com.example.movieappcompose.ui.theme.Grey
 import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
 
@@ -38,7 +38,7 @@ fun MovieApp(
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = { TopBar() },
+        topBar = { MoviePageTopBar() },
         bottomBar = {
             if (currentRoute != Screen.Detail.route) {
                 BottomBar(navController = navController)
@@ -52,23 +52,20 @@ fun MovieApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.Movie.route) {
-                MovieScreen()
-            }
-            composable(Screen.Series.route) {
-                SeriesScreen()
+                MoviePage()
             }
             composable(Screen.Watchlist.route) {
-                WatchlistScreen()
+                WatchlistPage()
             }
-            composable(Screen.Profile.route) {
-                ProfileScreen()
+            composable(Screen.About.route) {
+                AboutPage()
             }
         }
     }
 }
 
 @Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun MoviePageTopBar(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -84,7 +81,7 @@ fun TopBar(modifier: Modifier = Modifier) {
                 .padding(start = 16.dp),
         ) {
             Text(
-                text = stringResource(id = R.string.top_bar_title),
+                text = stringResource(id = R.string.movie_top_bar_title),
                 style = MaterialTheme.typography.h5.copy(
                     fontWeight = FontWeight.SemiBold,
                 ),
@@ -113,19 +110,14 @@ fun BottomBar(
             screen = Screen.Movie,
         ),
         NavigationItem(
-            title = stringResource(id = R.string.series),
-            icon = Icons.Outlined.Tv,
-            screen = Screen.Series,
-        ),
-        NavigationItem(
             title = stringResource(id = R.string.watchlist),
-            icon = Icons.Outlined.Bookmark,
+            icon = Icons.Outlined.Bookmarks,
             screen = Screen.Watchlist,
         ),
         NavigationItem(
-            title = stringResource(id = R.string.profile),
+            title = stringResource(id = R.string.about_top_bar_title),
             icon = Icons.Outlined.Person,
-            screen = Screen.Profile,
+            screen = Screen.About,
         )
     )
 
@@ -173,8 +165,16 @@ fun RowScope.BottomBarItem(
     )
 }
 
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_NO,
+    showSystemUi = true
+)
+@Preview(
+    showBackground = true,
+    uiMode = UI_MODE_NIGHT_YES,
+    showSystemUi = true
+)
 @Composable
 fun HomePagePreview() {
     MovieAppComposeTheme {

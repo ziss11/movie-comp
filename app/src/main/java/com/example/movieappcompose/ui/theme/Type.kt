@@ -40,7 +40,7 @@ val Typography = Typography(
         fontWeight = FontWeight.W500,
         fontSize = 14.sp
     ),
-    caption = TextStyle(
+    subtitle1 = TextStyle(
         fontFamily = ProductSans,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
