@@ -21,7 +21,9 @@ fun MovieCard(
     subtitle: String,
     modifier: Modifier = Modifier,
 ) {
-    Card(modifier = modifier) {
+    Card(
+        elevation = 1.dp,
+        modifier = modifier) {
         Column {
             Image(
                 painter = painterResource(image),

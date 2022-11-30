@@ -67,19 +67,15 @@ fun MovieApp(
 
 @Composable
 fun MoviePageTopBar(modifier: Modifier = Modifier) {
-    Box(
+    TopAppBar(
+        elevation = 1.dp,
+        contentPadding = PaddingValues(horizontal = 16.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colors.primary)
-            .height(60.dp),
-        contentAlignment = Alignment.CenterStart
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = stringResource(id = R.string.movie_top_bar_title),

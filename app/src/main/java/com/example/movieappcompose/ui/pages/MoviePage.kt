@@ -23,6 +23,7 @@ import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
 fun MoviePage(modifier: Modifier = Modifier) {
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
+        contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
