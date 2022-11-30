@@ -1,8 +1,10 @@
 package com.example.movieappcompose.ui.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun ContentSection(
@@ -11,7 +13,10 @@ fun ContentSection(
     content: @Composable () -> Unit,
 ) {
     Column(modifier = modifier) {
-        SectionText(text = title)
-        content
+        SectionText(
+            text = title,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        content()
     }
 }

@@ -6,10 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Movie
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Tv
+import androidx.compose.material.icons.outlined.*
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,10 +25,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieappcompose.ui.navigation.NavigationItem
 import com.example.movieappcompose.ui.navigation.Screen
-import com.example.movieappcompose.ui.screen.HomeScreen
-import com.example.movieappcompose.ui.screen.MovieScreen
-import com.example.movieappcompose.ui.screen.ProfileScreen
-import com.example.movieappcompose.ui.screen.SeriesScreen
+import com.example.movieappcompose.ui.screen.*
 import com.example.movieappcompose.ui.theme.Grey
 import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
 
@@ -46,7 +40,7 @@ fun MovieApp(
     Scaffold(
         topBar = { TopBar() },
         bottomBar = {
-            if (currentRoute != Screen.Detail.route && currentRoute != Screen.Watchlist.route) {
+            if (currentRoute != Screen.Detail.route) {
                 BottomBar(navController = navController)
             }
         },
@@ -54,17 +48,17 @@ fun MovieApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Home.route,
+            startDestination = Screen.Movie.route,
             modifier = modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) {
-                HomeScreen()
-            }
             composable(Screen.Movie.route) {
                 MovieScreen()
             }
             composable(Screen.Series.route) {
                 SeriesScreen()
+            }
+            composable(Screen.Watchlist.route) {
+                WatchlistScreen()
             }
             composable(Screen.Profile.route) {
                 ProfileScreen()
@@ -114,11 +108,6 @@ fun BottomBar(
 ) {
     val navigationItems = listOf(
         NavigationItem(
-            title = stringResource(id = R.string.home),
-            icon = Icons.Outlined.Home,
-            screen = Screen.Home,
-        ),
-        NavigationItem(
             title = stringResource(id = R.string.movie),
             icon = Icons.Outlined.Movie,
             screen = Screen.Movie,
@@ -127,6 +116,11 @@ fun BottomBar(
             title = stringResource(id = R.string.series),
             icon = Icons.Outlined.Tv,
             screen = Screen.Series,
+        ),
+        NavigationItem(
+            title = stringResource(id = R.string.watchlist),
+            icon = Icons.Outlined.Bookmark,
+            screen = Screen.Watchlist,
         ),
         NavigationItem(
             title = stringResource(id = R.string.profile),
