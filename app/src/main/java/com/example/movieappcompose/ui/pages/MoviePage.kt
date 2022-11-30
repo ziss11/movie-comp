@@ -75,6 +75,7 @@ fun MoviePage(modifier: Modifier = Modifier) {
                         },
                         title = "Avatar",
                         subtitle = "Action",
+                        threeLine = 4.8.toString()
                     )
                 }
             }
