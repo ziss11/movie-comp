@@ -46,7 +46,9 @@ fun MovieApp(
                 BottomBar(navController = navController)
             }
         },
-        modifier = modifier.background(MaterialTheme.colors.background)
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -88,7 +90,10 @@ fun BottomBar(
         )
     )
 
-    BottomNavigation(modifier = modifier.background(MaterialTheme.colors.background)) {
+    BottomNavigation(
+        backgroundColor = MaterialTheme.colors.surface,
+        modifier = modifier
+    ) {
         navigationItems.map { item ->
             BottomBarItem(
                 label = item.title, icon = item.icon,
@@ -115,7 +120,7 @@ fun RowScope.BottomBarItem(
         },
         label = { Text(text = label) },
         unselectedContentColor = Grey,
-        selectedContentColor = MaterialTheme.colors.secondary,
+        selectedContentColor = MaterialTheme.colors.primary,
         selected = currentRoute == route,
         onClick = {
             navController.navigate(route) {

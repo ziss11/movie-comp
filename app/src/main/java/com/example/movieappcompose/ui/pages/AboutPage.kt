@@ -51,6 +51,7 @@ fun AboutPage(modifier: Modifier = Modifier) {
 @Composable
 fun AboutPageTopBar(modifier: Modifier = Modifier) {
     TopAppBar(
+        backgroundColor = MaterialTheme.colors.background,
         elevation = 1.dp,
         title = {
             Text(

@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -23,11 +24,13 @@ fun MovieCard(
 ) {
     Card(
         elevation = 1.dp,
-        modifier = modifier) {
+        modifier = modifier
+    ) {
         Column {
             Image(
                 painter = painterResource(image),
                 contentDescription = title,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .height(200.dp)
                     .clip(

@@ -78,6 +78,7 @@ fun MoviePage(modifier: Modifier = Modifier) {
 @Composable
 fun MoviePageTopBar(modifier: Modifier = Modifier) {
     TopAppBar(
+        backgroundColor = MaterialTheme.colors.background,
         elevation = 1.dp,
         title = {
             Text(

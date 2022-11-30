@@ -18,6 +18,7 @@ fun WatchlistPage(modifier: Modifier = Modifier) {
 @Composable
 fun WatchlistPageTopBar(modifier: Modifier = Modifier) {
     TopAppBar(
+        backgroundColor = MaterialTheme.colors.background,
         elevation = 1.dp,
         title = {
             Text(

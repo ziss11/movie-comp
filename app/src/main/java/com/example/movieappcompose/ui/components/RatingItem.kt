@@ -16,7 +16,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.movieappcompose.R
 import com.example.movieappcompose.ui.theme.Grey
-import com.example.movieappcompose.ui.theme.Yellow
 
 @Composable
 fun RatingItem(
@@ -30,7 +29,7 @@ fun RatingItem(
         Icon(
             imageVector = Icons.Filled.Star,
             contentDescription = stringResource(R.string.movie_rating),
-            tint = Yellow,
+            tint = MaterialTheme.colors.secondary,
             modifier = Modifier.size(18.dp)
         )
         Spacer(modifier = Modifier.width(5.dp))
