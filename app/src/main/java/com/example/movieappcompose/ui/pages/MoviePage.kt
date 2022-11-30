@@ -94,7 +94,7 @@ fun MoviePageTopBar(modifier: Modifier = Modifier) {
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Search,
-                    tint = MaterialTheme.colors.onPrimary,
+                    tint = MaterialTheme.colors.onSurface,
                     contentDescription = stringResource(id = R.string.search_desc)
                 )
             }
