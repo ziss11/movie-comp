@@ -5,11 +5,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movieappcompose.R
@@ -68,6 +73,32 @@ fun MoviePage(modifier: Modifier = Modifier) {
             )
         }
     }
+}
+
+@Composable
+fun MoviePageTopBar(modifier: Modifier = Modifier) {
+    TopAppBar(
+        elevation = 1.dp,
+        title = {
+            Text(
+                text = stringResource(id = R.string.movie_top_bar_title),
+                style = MaterialTheme.typography.h5.copy(
+                    fontWeight = FontWeight.Medium,
+                ),
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = {},
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.Search,
+                    contentDescription = stringResource(id = R.string.search_desc)
+                )
+            }
+        },
+        modifier = modifier
+    )
 }
 
 

@@ -7,16 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -32,14 +28,19 @@ import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
 
 @Composable
 fun MovieApp(
-    modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        topBar = { MoviePageTopBar() },
+        topBar = {
+            when (currentRoute) {
+                Screen.Movie.route -> MoviePageTopBar()
+                Screen.Watchlist.route -> WatchlistPageTopBar()
+                Screen.About.route -> AboutPageTopBar()
+            }
+        },
         bottomBar = {
             if (currentRoute != Screen.Detail.route) {
                 BottomBar(navController = navController)
@@ -66,39 +67,8 @@ fun MovieApp(
 }
 
 @Composable
-fun MoviePageTopBar(modifier: Modifier = Modifier) {
-    TopAppBar(
-        elevation = 1.dp,
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        modifier = modifier
-    ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(id = R.string.movie_top_bar_title),
-                style = MaterialTheme.typography.h5.copy(
-                    fontWeight = FontWeight.SemiBold,
-                ),
-            )
-            IconButton(
-                onClick = {},
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    contentDescription = stringResource(id = R.string.search_desc)
-                )
-            }
-        }
-    }
-}
-
-@Composable
 fun BottomBar(
-    navController: NavHostController,
-    modifier: Modifier = Modifier
+    navController: NavHostController, modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
         NavigationItem(
@@ -112,7 +82,7 @@ fun BottomBar(
             screen = Screen.Watchlist,
         ),
         NavigationItem(
-            title = stringResource(id = R.string.about_top_bar_title),
+            title = stringResource(id = R.string.about),
             icon = Icons.Outlined.Person,
             screen = Screen.About,
         )
@@ -131,10 +101,7 @@ fun BottomBar(
 
 @Composable
 fun RowScope.BottomBarItem(
-    label: String,
-    icon: ImageVector,
-    route: String,
-    navController: NavHostController
+    label: String, icon: ImageVector, route: String, navController: NavHostController
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route

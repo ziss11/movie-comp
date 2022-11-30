@@ -21,49 +21,47 @@ import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
 
 @Composable
 fun AboutPage(modifier: Modifier = Modifier) {
-    Scaffold { innerPadding ->
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = modifier.padding(innerPadding)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.profile),
-                contentDescription = stringResource(id = R.string.profile_desc),
-                modifier = Modifier
-                    .size(150.dp)
-                    .clip(RoundedCornerShape(100.dp))
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.profile),
+            contentDescription = stringResource(id = R.string.profile_desc),
+            modifier = Modifier
+                .size(150.dp)
+                .clip(RoundedCornerShape(100))
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(id = R.string.my_name),
+            style = MaterialTheme.typography.h5
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(id = R.string.my_email),
+            style = MaterialTheme.typography.h6.copy(
+                fontWeight = FontWeight.Medium
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(id = R.string.my_name),
-                style = MaterialTheme.typography.h5
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = stringResource(id = R.string.my_email),
-                style = MaterialTheme.typography.h6
-            )
-        }
+        )
     }
 }
 
 @Composable
 fun AboutPageTopBar(modifier: Modifier = Modifier) {
-    Box(
+    TopAppBar(
+        elevation = 1.dp,
+        title = {
+            Text(
+                text = stringResource(id = R.string.about_top_bar_title),
+                style = MaterialTheme.typography.h5.copy(
+                    fontWeight = FontWeight.Medium,
+                ),
+            )
+        },
         modifier = modifier
-            .fillMaxWidth()
-            .background(MaterialTheme.colors.primary)
-            .height(60.dp),
-        contentAlignment = Alignment.CenterStart
-    ) {
-        Text(
-            text = stringResource(id = R.string.about_top_bar_title),
-            style = MaterialTheme.typography.h5.copy(
-                fontWeight = FontWeight.SemiBold,
-            ),
-        )
-    }
+    )
 }
 
 @Preview(showBackground = true, showSystemUi = true)

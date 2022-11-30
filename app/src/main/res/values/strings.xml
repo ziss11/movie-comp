@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">MovieAppCompose</string>
     <string name="movie_top_bar_title">Movie Comp</string>
-    <string name="about_top_bar_title">About</string>
+    <string name="about_top_bar_title">About Me</string>
+    <string name="watchlist_top_bar_title">Watchlist Movie</string>
     <string name="movie">Movie</string>
+    <string name="about">About</string>
     <string name="watchlist">Watchlist</string>
     <string name="search_desc">Search Movie</string>
     <string name="movie_desc">Movie Page</string>
