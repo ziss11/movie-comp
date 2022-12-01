@@ -1,4 +1,4 @@
-package com.example.movieappcompose.ui
+package com.example.movieappcompose.ui.presentation
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -20,11 +20,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieappcompose.R
-import com.example.movieappcompose.ui.navigation.NavigationItem
-import com.example.movieappcompose.ui.navigation.Screen
-import com.example.movieappcompose.ui.pages.*
-import com.example.movieappcompose.ui.theme.Grey
-import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
+import com.example.movieappcompose.presentation.navigation.NavigationItem
+import com.example.movieappcompose.presentation.navigation.Screen
+import com.example.movieappcompose.presentation.pages.*
+import com.example.movieappcompose.presentation.theme.Grey
+import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 
 @Composable
 fun MovieApp(

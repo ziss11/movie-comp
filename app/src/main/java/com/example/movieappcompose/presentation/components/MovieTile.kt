@@ -1,4 +1,4 @@
-package com.example.movieappcompose.ui.components
+package com.example.movieappcompose.presentation.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Card
@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.movieappcompose.ui.theme.Grey
+import com.example.movieappcompose.presentation.theme.Grey
 
 @Composable
 fun MovieTile(

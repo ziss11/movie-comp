@@ -1,4 +1,4 @@
-package com.example.movieappcompose.ui.navigation
+package com.example.movieappcompose.presentation.navigation
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

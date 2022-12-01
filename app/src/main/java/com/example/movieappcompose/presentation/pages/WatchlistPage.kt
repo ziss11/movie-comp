@@ -1,6 +1,5 @@
-package com.example.movieappcompose.ui.pages
+package com.example.movieappcompose.presentation.pages
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movieappcompose.R
-import com.example.movieappcompose.ui.components.MovieTile
-import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
+import com.example.movieappcompose.presentation.components.MovieTile
+import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 
 @Composable
 fun WatchlistPage(modifier: Modifier = Modifier) {

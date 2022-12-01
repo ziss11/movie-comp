@@ -1,4 +1,4 @@
-package com.example.movieappcompose.ui.components
+package com.example.movieappcompose.presentation.components
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image

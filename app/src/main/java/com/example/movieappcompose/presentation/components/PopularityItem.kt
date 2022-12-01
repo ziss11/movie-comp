@@ -1,4 +1,4 @@
-package com.example.movieappcompose.ui.components
+package com.example.movieappcompose.presentation.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
