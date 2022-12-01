@@ -18,18 +18,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.movieappcompose.R
-import com.example.movieappcompose.ui.components.ContentSection
-import com.example.movieappcompose.ui.components.MovieCard
-import com.example.movieappcompose.ui.components.MovieTile
-import com.example.movieappcompose.ui.components.SectionText
+import com.example.movieappcompose.ui.components.*
 import com.example.movieappcompose.ui.theme.MovieAppComposeTheme
 
 @Composable
 fun MoviePage(modifier: Modifier = Modifier) {
     LazyColumn(
-        modifier = modifier.fillMaxWidth(),
         contentPadding = PaddingValues(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = modifier.fillMaxWidth(),
     ) {
         item {
             ContentSection(
@@ -43,8 +40,7 @@ fun MoviePage(modifier: Modifier = Modifier) {
                     items(count = 5) {
                         MovieCard(
                             image = R.drawable.example_movie1,
-                            title = "Avatar",
-                            subtitle = 4.8.toString(),
+                            contentDescription = "Avatar",
                         )
                     }
                 }
@@ -55,7 +51,7 @@ fun MoviePage(modifier: Modifier = Modifier) {
         }
         items(count = 5) {
             MovieTile(
-                trailing = {
+                leading = {
                     Image(
                         painter = painterResource(id = R.drawable.example_movie1),
                         contentDescription = null,
@@ -67,8 +63,7 @@ fun MoviePage(modifier: Modifier = Modifier) {
                     )
                 },
                 title = "Avatar",
-                subtitle = "Action",
-                threeLine = 4.8.toString(),
+                subtitle = "Afgkg gjggjkgkgglggblgbljv b bjbfbngb jggb gbnjgdnvdbgjgbj",
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
         }

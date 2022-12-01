@@ -14,5 +14,6 @@
     <string name="profile_desc">Profile Image</string>
     <string name="my_name">Abdul Azis</string>
     <string name="my_email">abdul.azizz1108@gmail.com</string>
-    <string name="movie_rating">Movie Rating</string>
+    <string name="movie_popularity">Movie Popularity</string>
+    <string name="remove_bookmark">Remove movie from bookmark</string>
 </resources>

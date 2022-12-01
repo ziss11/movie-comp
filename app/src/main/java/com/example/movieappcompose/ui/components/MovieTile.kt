@@ -13,13 +13,13 @@ import com.example.movieappcompose.ui.theme.Grey
 
 @Composable
 fun MovieTile(
-    trailing: @Composable () -> Unit,
     title: String,
     subtitle: String,
-    threeLine: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    leading: @Composable () -> Unit,
 ) {
     Card(
+        elevation = 4.dp,
         modifier = modifier.fillMaxWidth()
     ) {
         Row(
@@ -29,23 +29,25 @@ fun MovieTile(
                 vertical = 10.dp
             ),
         ) {
-            trailing()
+            leading()
             Spacer(modifier = Modifier.width(12.dp))
-            Column {
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.subtitle1.copy(
-                        color = Grey
-                    )
-                )
+            Column(modifier = Modifier.weight(1f)) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = title,
                     overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
                     style = MaterialTheme.typography.body1
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                RatingItem(rating = threeLine.toDoubleOrNull() ?: 0.0)
+                Text(
+                    text = subtitle,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                    style = MaterialTheme.typography.body2.copy(
+                        color = Grey
+                    )
+                )
             }
         }
     }
