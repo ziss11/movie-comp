@@ -9,7 +9,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -19,10 +18,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movieappcompose.R
 import com.example.movieappcompose.presentation.ViewModelFactory
 import com.example.movieappcompose.data.models.MovieModel
-import com.example.movieappcompose.presentation.components.ContentSection
-import com.example.movieappcompose.presentation.components.MovieCard
-import com.example.movieappcompose.presentation.components.MovieTile
-import com.example.movieappcompose.presentation.components.SectionText
+import com.example.movieappcompose.presentation.components.*
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.presentation.viewmodels.MovieViewModel
 import com.example.movieappcompose.utilities.ResultState
@@ -33,7 +29,7 @@ fun MoviePage(
     modifier: Modifier = Modifier,
     viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
-    val nowPlayingMoviesResult: ResultState<List<MovieModel>> = viewModel.getNowPlayingMoviesResult
+    val nowPlayingMoviesResult: ResultState<List<MovieModel>> = viewModel.nowPlayingMoviesResult
     val topRatedMoviesResult: ResultState<List<MovieModel>> = viewModel.topRatedMoviesResult
 
     LazyColumn(
@@ -84,8 +80,8 @@ fun MoviePage(
 @Composable
 fun MoviePageTopBar(modifier: Modifier = Modifier) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 1.dp,
+        backgroundColor = MaterialTheme.colors.surface,
+        elevation = 4.dp,
         title = {
             Text(
                 text = stringResource(id = R.string.movie_top_bar_title),
@@ -107,16 +103,6 @@ fun MoviePageTopBar(modifier: Modifier = Modifier) {
         },
         modifier = modifier
     )
-}
-
-@Composable
-fun LoadingScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxWidth()
-    ) {
-        CircularProgressIndicator(color = MaterialTheme.colors.primary)
-    }
 }
 
 @Composable
@@ -156,16 +142,6 @@ fun NowPlayingMovieResultScreen(
         onClick = { navigateToDetail(id) },
         modifier = modifier.padding(horizontal = 16.dp),
     )
-}
-
-@Composable
-fun ErrorScreen(modifier: Modifier = Modifier) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier.fillMaxWidth()
-    ) {
-        Text(stringResource(R.string.load_failed))
-    }
 }
 
 @Preview(

@@ -1,16 +1,16 @@
 package com.example.movieappcompose.presentation.pages
 
 import android.content.res.Configuration
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,34 +22,61 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.R
+import com.example.movieappcompose.data.models.GenreModel
+import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.presentation.ViewModelFactory
 import com.example.movieappcompose.presentation.components.ContentSection
+import com.example.movieappcompose.presentation.components.ErrorScreen
+import com.example.movieappcompose.presentation.components.LoadingScreen
 import com.example.movieappcompose.presentation.theme.Grey
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
+import com.example.movieappcompose.presentation.viewmodels.DetailViewModel
+import com.example.movieappcompose.utilities.ResultState
 
 @Composable
 fun DetailPage(
     movieId: Int,
-    modifier: Modifier = Modifier
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: DetailViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
+    val movieDetailResult: ResultState<MovieModel> = viewModel.movieDetailResult
+
     Scaffold(
-        topBar = { DetailTopBar() },
+        topBar = { DetailTopBar(navigateBack = navigateBack) },
         modifier = modifier,
-    ) {
-        DetailContent(
-            image = R.drawable.example_movie1,
-            title = "Avatar",
-            tagline = "SuperHero",
-            overview = "akdngklahga ajkbhjakbajfbhakfbhdfjkbhfdkbkdfjbhakfdj njhbjkfb"
-        )
+    ) { innerPadding ->
+        when (movieDetailResult) {
+            is ResultState.Loading -> {
+                LoadingScreen()
+                viewModel.fetchMovieDetail(movieId)
+            }
+            is ResultState.Success -> {
+                val data = movieDetailResult.data
+                DetailContent(
+                    imageUrl = data.backdropPath.toString(),
+                    title = data.title.toString(),
+                    tagline = data.tagline,
+                    genres = data.genres ?: listOf(),
+                    overview = data.overview.toString(),
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
+            is ResultState.Error -> ErrorScreen()
+        }
     }
 }
 
 @Composable
 fun DetailContent(
-    @DrawableRes image: Int,
+    imageUrl: String,
     title: String,
-    tagline: String,
+    tagline: String?,
+    genres: List<GenreModel>?,
     overview: String,
     modifier: Modifier = Modifier
 ) {
@@ -57,16 +84,22 @@ fun DetailContent(
         modifier = modifier
             .fillMaxSize()
             .padding(vertical = 16.dp)
+            .scrollable(
+                state = rememberScrollState(),
+                orientation = Orientation.Vertical
+            )
     ) {
-        Image(
-            painter = painterResource(id = image),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
+        AsyncImage(
+            model = BuildConfig.IMAGE_BASE_URL + imageUrl,
+            contentDescription = title,
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Fit,
+            error = painterResource(id = R.drawable.ic_broken_image_white),
+            placeholder = painterResource(id = R.drawable.ic_image_white),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .height(370.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
@@ -77,18 +110,28 @@ fun DetailContent(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
         Spacer(modifier = Modifier.height(5.dp))
-        Text(
-            text = tagline,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2,
-            style = MaterialTheme.typography.body1,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        GenreItem(
-            name = "Action",
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
+        if (!tagline.isNullOrBlank()) {
+            Text(
+                text = tagline,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                style = MaterialTheme.typography.body1.copy(
+                    color = Grey
+                ),
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+        if (genres != null) {
+            Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                genres.map { item ->
+                    GenreItem(
+                        name = item.name ?: "",
+                        modifier = Modifier.padding(horizontal = 2.dp)
+                    )
+                }
+            }
+        }
         Spacer(modifier = Modifier.height(16.dp))
         ContentSection(title = stringResource(id = R.string.overview)) {
             Text(
@@ -125,13 +168,16 @@ fun GenreItem(
 }
 
 @Composable
-fun DetailTopBar(modifier: Modifier = Modifier) {
+fun DetailTopBar(
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.background,
         elevation = 0.dp,
         navigationIcon = {
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = navigateBack,
             ) {
                 Icon(
                     Icons.Default.ArrowBackIosNew,
@@ -175,7 +221,10 @@ fun DetailTopBar(modifier: Modifier = Modifier) {
 @Composable
 fun DetailPagePreview() {
     MovieAppComposeTheme {
-        DetailPage(movieId = 851644)
+        DetailPage(
+            movieId = 851644,
+            navigateBack = {},
+        )
     }
 }
 

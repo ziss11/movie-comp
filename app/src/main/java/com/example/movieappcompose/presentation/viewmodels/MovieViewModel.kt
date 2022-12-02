@@ -21,7 +21,7 @@ class MovieViewModel(
     var topRatedMoviesResult: ResultState<List<MovieModel>> by mutableStateOf(ResultState.Loading)
         private set
 
-    var getNowPlayingMoviesResult: ResultState<List<MovieModel>> by mutableStateOf(ResultState.Loading)
+    var nowPlayingMoviesResult: ResultState<List<MovieModel>> by mutableStateOf(ResultState.Loading)
         private set
 
     init {
@@ -45,8 +45,7 @@ class MovieViewModel(
 
     private fun fetchNowPlayingMovies(apiKey: String = BuildConfig.API_KEY) {
         viewModelScope.launch {
-            getNowPlayingMoviesResult = ResultState.Loading
-            getNowPlayingMoviesResult = try {
+            nowPlayingMoviesResult = try {
                 ResultState.Success(getNowPlayingMovies.execute(apiKey))
             } catch (e: IOException) {
                 ResultState.Error(e.toString())

@@ -79,7 +79,10 @@ fun MovieApp(
             ) {
                 val movieId = it.arguments?.getInt("movieId") ?: 0
 
-                DetailPage(movieId = movieId)
+                DetailPage(
+                    movieId = movieId,
+                    navigateBack = { navController.navigateUp() },
+                )
             }
         }
     }
