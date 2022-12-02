@@ -3,6 +3,7 @@
     <string name="movie_top_bar_title">Movie Comp</string>
     <string name="about_top_bar_title">About Me</string>
     <string name="watchlist_top_bar_title">Watchlist Movie</string>
+    <string name="detail_top_bar_title">Movie Details</string>
     <string name="movie">Movie</string>
     <string name="about">About</string>
     <string name="watchlist">Watchlist</string>
@@ -18,4 +19,6 @@
     <string name="remove_bookmark">Remove movie from bookmark</string>
     <string name="load_failed">Data Empty</string>
     <string name="reload">Reload</string>
+    <string name="go_to_previous_page">Go to previous page</string>
+    <string name="overview">Overview</string>
 </resources>

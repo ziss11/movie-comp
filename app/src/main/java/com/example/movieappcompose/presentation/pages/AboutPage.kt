@@ -1,5 +1,6 @@
 package com.example.movieappcompose.presentation.pages
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -62,7 +63,16 @@ fun AboutPageTopBar(modifier: Modifier = Modifier) {
     )
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_NO,
+    showSystemUi = true
+)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showSystemUi = true
+)
 @Composable
 fun AboutPagePreview() {
     MovieAppComposeTheme {

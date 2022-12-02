@@ -5,5 +5,6 @@
     <color name="grey">#FF696D74</color>
     <color name="black">#FF1D2027</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="white_variant">#FFF5F8F7</color>
     <color name="transparent">#00000000</color>
 </resources>
