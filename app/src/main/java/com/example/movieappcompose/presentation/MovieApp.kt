@@ -83,6 +83,9 @@ fun MovieApp(
                 DetailPage(
                     movieId = movieId,
                     navigateBack = { navController.navigateUp() },
+                    navigateAnotherDetail = { anotherMovieId ->
+                        navController.navigate(Screen.Detail.createRoute(anotherMovieId))
+                    }
                 )
             }
         }
