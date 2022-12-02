@@ -15,10 +15,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.movieappcompose.R
 import com.example.movieappcompose.presentation.navigation.NavigationItem
 import com.example.movieappcompose.utilities.Screen
@@ -57,13 +59,27 @@ fun MovieApp(
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.Movie.route) {
-                MoviePage()
+                MoviePage(
+                    navigateToDetail = { movieId ->
+                        navController.navigate(Screen.Detail.createRoute(movieId))
+                    }
+                )
             }
             composable(Screen.Watchlist.route) {
                 WatchlistPage()
             }
             composable(Screen.About.route) {
                 AboutPage()
+            }
+            composable(
+                route = Screen.Detail.route,
+                arguments = listOf(navArgument("movieId") {
+                    type = NavType.IntType
+                })
+            ) {
+                val movieId = it.arguments?.getInt("movieId") ?: 0
+
+                DetailPage(movieId = movieId)
             }
         }
     }

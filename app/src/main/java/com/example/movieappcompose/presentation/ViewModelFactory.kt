@@ -1,4 +1,4 @@
-package com.example.movieappcompose
+package com.example.movieappcompose.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

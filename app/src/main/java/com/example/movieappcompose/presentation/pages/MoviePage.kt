@@ -12,20 +12,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movieappcompose.R
-import com.example.movieappcompose.ViewModelFactory
+import com.example.movieappcompose.presentation.ViewModelFactory
 import com.example.movieappcompose.data.models.MovieModel
 import com.example.movieappcompose.presentation.components.ContentSection
 import com.example.movieappcompose.presentation.components.MovieCard
 import com.example.movieappcompose.presentation.components.MovieTile
 import com.example.movieappcompose.presentation.components.SectionText
+import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.presentation.viewmodels.MovieViewModel
 import com.example.movieappcompose.utilities.ResultState
 
 @Composable
 fun MoviePage(
+    navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
@@ -44,7 +47,10 @@ fun MoviePage(
             ) {
                 when (nowPlayingMoviesResult) {
                     is ResultState.Loading -> LoadingScreen()
-                    is ResultState.Success -> PopularMovieResultScreen(nowPlayingMoviesResult.data)
+                    is ResultState.Success -> PopularMovieResultScreen(
+                        popularMovies = nowPlayingMoviesResult.data,
+                        navigateToDetail = navigateToDetail,
+                    )
                     is ResultState.Error -> ErrorScreen()
                 }
             }
@@ -59,9 +65,11 @@ fun MoviePage(
             is ResultState.Success -> {
                 items(topRatedMoviesResult.data) { item ->
                     NowPlayingMovieResultScreen(
+                        id = item.id,
                         imageUrl = item.posterPath.toString(),
                         title = item.title.toString(),
                         overview = item.overview.toString(),
+                        navigateToDetail = navigateToDetail,
                     )
                 }
             }
@@ -112,6 +120,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun PopularMovieResultScreen(
+    navigateToDetail: (Int) -> Unit,
     popularMovies: List<MovieModel>,
     modifier: Modifier = Modifier,
 ) {
@@ -124,6 +133,7 @@ fun PopularMovieResultScreen(
             MovieCard(
                 imageUrl = item.posterPath.toString(),
                 contentDescription = item.title.toString(),
+                onClick = { navigateToDetail(item.id) },
             )
         }
     }
@@ -131,15 +141,18 @@ fun PopularMovieResultScreen(
 
 @Composable
 fun NowPlayingMovieResultScreen(
+    id: Int,
     imageUrl: String,
     title: String,
     overview: String,
+    navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     MovieTile(
         imageUrl = imageUrl,
         title = title,
         subtitle = overview,
+        onClick = { navigateToDetail(id) },
         modifier = modifier.padding(horizontal = 16.dp),
     )
 }
@@ -154,11 +167,10 @@ fun ErrorScreen(modifier: Modifier = Modifier) {
     }
 }
 
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun MoviePagePreview() {
-//    MovieAppComposeTheme {
-//        val mockData = ResultState<List<MovieModel>>(List(10) { MovieModel() })
-//        MoviePage()
-//    }
-//}
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun MoviePagePreview() {
+    MovieAppComposeTheme {
+        MoviePage(navigateToDetail = {})
+    }
+}

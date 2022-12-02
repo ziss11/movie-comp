@@ -1,5 +1,6 @@
 package com.example.movieappcompose.presentation.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -23,11 +24,12 @@ fun MovieTile(
     imageUrl: String,
     title: String,
     subtitle: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
         contentAlignment = Alignment.BottomStart,
-        modifier = modifier,
+        modifier = modifier.clickable { onClick() },
     ) {
         Card(
             elevation = 4.dp,
@@ -62,12 +64,14 @@ fun MovieTile(
         AsyncImage(
             model = BuildConfig.IMAGE_BASE_URL + imageUrl,
             contentDescription = title,
-            contentScale = ContentScale.Inside,
-            error = painterResource(id = R.drawable.ic_broken_image),
-            placeholder = painterResource(id = R.drawable.ic_image),
+            alignment = Alignment.Center,
+            contentScale = ContentScale.Fit,
+            error = painterResource(id = R.drawable.ic_broken_image_white),
+            placeholder = painterResource(id = R.drawable.ic_image_white),
             modifier = Modifier
                 .clip(RoundedCornerShape(4.dp))
                 .height(120.dp)
+                .width(80.dp)
         )
     }
 }
