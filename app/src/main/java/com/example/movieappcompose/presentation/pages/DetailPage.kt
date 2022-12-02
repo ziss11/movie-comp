@@ -73,6 +73,7 @@ fun DetailPage(
                 )
             }
             is ResultState.Error -> ErrorScreen()
+            else -> {}
         }
     }
 }
@@ -193,7 +194,7 @@ fun DetailContent(
         }
         ContentSection(
             title = stringResource(id = R.string.recommendation),
-            modifier = Modifier.fillMaxSize().padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp)
         ) {
             when (recommendationMoviesResult) {
                 is ResultState.Loading -> {
@@ -216,6 +217,7 @@ fun DetailContent(
                     }
                 }
                 is ResultState.Error -> ErrorScreen()
+                else -> {}
             }
         }
     }

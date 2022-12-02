@@ -7,7 +7,7 @@
     <string name="movie">Movie</string>
     <string name="about">About</string>
     <string name="watchlist">Watchlist</string>
-    <string name="search_desc">Search Movie</string>
+    <string name="search_desc">Search Movies</string>
     <string name="movie_desc">Movie Page</string>
     <string name="watchlist_desc">Watchlist Page</string>
     <string name="about_desc">About Page</string>
@@ -23,4 +23,7 @@
     <string name="overview">Overview</string>
     <string name="recommendation">Recommendation</string>
     <string name="no_recommendation">No Recommendations</string>
+    <string name="query_search_placeholder">Type to search…</string>
+    <string name="search_empty">Movie not found</string>
+
 </resources>

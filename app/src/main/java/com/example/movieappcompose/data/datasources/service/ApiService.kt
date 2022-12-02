@@ -29,7 +29,7 @@ interface ApiService {
         @Query("api_key") apiKey: String,
     ): MovieModel
 
-    @GET("search/movie")
+    @GET("search/movie ")
     suspend fun searchMovie(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,

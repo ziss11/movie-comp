@@ -6,18 +6,18 @@ import com.example.movieappcompose.Injection.provideGetMovieDetail
 import com.example.movieappcompose.Injection.provideGetNowPlayingMovies
 import com.example.movieappcompose.Injection.provideGetRecommendedMovies
 import com.example.movieappcompose.Injection.provideGetTopRatedMovies
-import com.example.movieappcompose.domain.usecase.GetMovieDetail
-import com.example.movieappcompose.domain.usecase.GetNowPlayingMovies
-import com.example.movieappcompose.domain.usecase.GetRecommendedMovies
-import com.example.movieappcompose.domain.usecase.GetTopRatedMovies
+import com.example.movieappcompose.Injection.provideSearchMovie
+import com.example.movieappcompose.domain.usecase.*
 import com.example.movieappcompose.presentation.viewmodels.DetailViewModel
 import com.example.movieappcompose.presentation.viewmodels.MovieViewModel
+import com.example.movieappcompose.presentation.viewmodels.SearchViewModel
 
 class ViewModelFactory private constructor(
     private val getTopRatedMovies: GetTopRatedMovies,
     private val getNowPlayingMovies: GetNowPlayingMovies,
     private val getMovieDetail: GetMovieDetail,
-    private val getRecommendedMovies: GetRecommendedMovies
+    private val getRecommendedMovies: GetRecommendedMovies,
+    private val searchMovie: SearchMovie,
 ) :
     ViewModelProvider.NewInstanceFactory() {
 
@@ -27,6 +27,8 @@ class ViewModelFactory private constructor(
             return MovieViewModel(getTopRatedMovies, getNowPlayingMovies) as T
         } else if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
             return DetailViewModel(getMovieDetail, getRecommendedMovies) as T
+        } else if (modelClass.isAssignableFrom(SearchViewModel::class.java)) {
+            return SearchViewModel(searchMovie) as T
         }
         throw IllegalArgumentException("Unknown view model class: ${modelClass}")
     }
@@ -40,6 +42,7 @@ class ViewModelFactory private constructor(
                 provideGetNowPlayingMovies(),
                 provideGetMovieDetail(),
                 provideGetRecommendedMovies(),
+                provideSearchMovie(),
             )
         }.also { instance = it }
     }

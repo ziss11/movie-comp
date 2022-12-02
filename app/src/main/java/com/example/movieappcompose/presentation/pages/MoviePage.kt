@@ -49,6 +49,7 @@ fun MoviePage(
                         navigateToDetail = navigateToDetail,
                     )
                     is ResultState.Error -> ErrorScreen()
+                    else -> {}
                 }
             }
         }
@@ -73,12 +74,16 @@ fun MoviePage(
             is ResultState.Error -> {
                 item { ErrorScreen() }
             }
+            else -> {}
         }
     }
 }
 
 @Composable
-fun MoviePageTopBar(modifier: Modifier = Modifier) {
+fun MoviePageTopBar(
+    navigateToSearch: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.surface,
         elevation = 0.dp,
@@ -92,7 +97,7 @@ fun MoviePageTopBar(modifier: Modifier = Modifier) {
         },
         actions = {
             IconButton(
-                onClick = {},
+                onClick = navigateToSearch,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Search,

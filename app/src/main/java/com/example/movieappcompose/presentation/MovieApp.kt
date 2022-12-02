@@ -40,13 +40,17 @@ fun MovieApp(
     Scaffold(
         topBar = {
             when (currentRoute) {
-                Screen.Movie.route -> MoviePageTopBar()
+                Screen.Movie.route -> MoviePageTopBar(
+                    navigateToSearch = {
+                        navController.navigate(Screen.SearchMovies.route)
+                    }
+                )
                 Screen.Watchlist.route -> WatchlistPageTopBar()
                 Screen.About.route -> AboutPageTopBar()
             }
         },
         bottomBar = {
-            if (currentRoute != Screen.Detail.route) {
+            if (currentRoute != Screen.Detail.route && currentRoute != Screen.SearchMovies.route) {
                 BottomBar(navController = navController)
             }
         },
@@ -88,6 +92,14 @@ fun MovieApp(
                     }
                 )
             }
+            composable(Screen.SearchMovies.route) {
+                SearchPage(
+                    navigateBack = { navController.navigateUp() },
+                    navigateToDetail = { movieId ->
+                        navController.navigate(Screen.Detail.createRoute(movieId))
+                    }
+                )
+            }
         }
     }
 }
@@ -121,7 +133,8 @@ fun BottomBar(
     ) {
         navigationItems.map { item ->
             BottomBarItem(
-                label = item.title, icon = item.icon,
+                label = item.title,
+                icon = item.icon,
                 route = item.screen.route,
                 navController = navController,
             )
@@ -148,6 +161,7 @@ fun RowScope.BottomBarItem(
         selectedContentColor = MaterialTheme.colors.primary,
         selected = currentRoute == route,
         onClick = {
+            navController.popBackStack()
             navController.navigate(route) {
                 popUpTo(navController.graph.findStartDestination().id) {
                     saveState = true
