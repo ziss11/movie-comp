@@ -49,7 +49,6 @@ fun DetailPage(
 ) {
     val movieDetailResult: ResultState<MovieModel> = viewModel.movieDetailResult
 
-
     Scaffold(
         topBar = { DetailTopBar(navigateBack = navigateBack) },
         modifier = modifier,
@@ -137,21 +136,18 @@ fun DetailContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
         AsyncImage(
             model = BuildConfig.IMAGE_BASE_URL + imageUrl,
             contentDescription = title,
             alignment = Alignment.Center,
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.FillBounds,
             error = painterResource(id = R.drawable.ic_broken_image_white),
             placeholder = painterResource(id = R.drawable.ic_image_white),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .height(250.dp)
+                .height(225.dp)
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
@@ -197,7 +193,7 @@ fun DetailContent(
         }
         ContentSection(
             title = stringResource(id = R.string.recommendation),
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.fillMaxSize().padding(top = 16.dp)
         ) {
             when (recommendationMoviesResult) {
                 is ResultState.Loading -> {
@@ -205,10 +201,19 @@ fun DetailContent(
                     viewModel.fetchRecommendationMovies(id)
                 }
                 is ResultState.Success -> {
-                    RecommendationMovieContent(
-                        recommendationMovies = recommendationMoviesResult.data,
-                        navigateToDetail = navigateToDetail,
-                    )
+                    val data = recommendationMoviesResult.data
+
+                    if (data.isNotEmpty()) {
+                        RecommendationMovieContent(
+                            recommendationMovies = recommendationMoviesResult.data,
+                            navigateToDetail = navigateToDetail,
+                        )
+                    } else {
+                        ErrorScreen(
+                            text = stringResource(id = R.string.no_recommendation),
+                            modifier = Modifier
+                        )
+                    }
                 }
                 is ResultState.Error -> ErrorScreen()
             }
@@ -244,7 +249,7 @@ fun RecommendationMovieContent(
     modifier: Modifier = Modifier
 ) {
     LazyRow(
-        contentPadding = PaddingValues(horizontal = 16.dp),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = modifier,
     ) {
