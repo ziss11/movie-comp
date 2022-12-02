@@ -4,7 +4,7 @@ import com.example.movieappcompose.Injection
 import com.example.movieappcompose.domain.repositories.MovieRepository
 
 class GetPopularMovies private constructor(private val repository: MovieRepository) {
-    fun execute(apiKey: String) = repository.getPopularMovies(apiKey);
+    suspend fun execute(apiKey: String) = repository.getPopularMovies(apiKey);
 
     companion object {
         private var instance: GetPopularMovies? = null

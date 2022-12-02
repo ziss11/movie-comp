@@ -1,36 +1,38 @@
 package com.example.movieappcompose.data.datasources.service
 
 import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.data.models.MovieResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
-    @GET("movie/popular?api_key={apiKey}")
-    fun getPopularMovies(
-        @Path("apiKey") apiKey: String,
-    ): Call<List<MovieModel>>
+    @GET("movie/popular")
+    suspend fun getPopularMovies(
+        @Query("api_key") apiKey: String,
+    ): MovieResponse
 
-    @GET("movie/now_playing?api_key={apiKey}")
+    @GET("movie/now_playing")
     fun getNowPlayingMovies(
-        @Path("apiKey") apiKey: String,
-    ): Call<List<MovieModel>>
+        @Query("api_key") apiKey: String,
+    ): MovieResponse
 
-    @GET("movie/{movieId}/recommendations?api_key={apiKey}")
+    @GET("movie/{movie_id}/recommendations")
     fun getRecommendedMoviesById(
-        @Path("movieId") movieId: Int,
-        @Path("apiKey") apiKey: String,
-    ): Call<List<MovieModel>>
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+    ): MovieResponse
 
-    @GET("movie/{movieId}?api_key={apiKey}")
+    @GET("movie/{movie_id}")
     fun getMovieDetail(
-        @Path("movieId") movieId: Int,
-        @Path("apiKey") apiKey: String,
-    ): Call<MovieModel>
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+    ): MovieModel
 
-    @GET("search/movie?api_key={apiKey}&query={query}")
+    @GET("search/movie")
     fun searchMovie(
-        @Path("apiKey") apiKey: String,
-        @Path("apiKey") query: String,
-    ): Call<List<MovieModel>>
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+    ): MovieResponse
 }

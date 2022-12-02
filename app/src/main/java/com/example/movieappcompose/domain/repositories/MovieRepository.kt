@@ -4,9 +4,9 @@ import com.example.movieappcompose.data.models.MovieModel
 import com.example.movieappcompose.utilities.ResultState
 
 interface MovieRepository {
-    fun getPopularMovies(apiKey: String): ResultState<List<MovieModel>>
-    fun getNowPlayingMovies(apiKey: String): ResultState<List<MovieModel>>
-    fun getRecommendedMoviesById(movieId: Int, apiKey: String): ResultState<List<MovieModel>>
-    fun getMovieDetail(movieId: Int, apiKey: String): ResultState<MovieModel>
-    fun searchMovie(apiKey: String, query: String): ResultState<List<MovieModel>>
+    suspend fun getPopularMovies(apiKey: String): List<MovieModel>
+    suspend fun getNowPlayingMovies(apiKey: String): List<MovieModel>
+    suspend fun getRecommendedMoviesById(movieId: Int, apiKey: String): List<MovieModel>
+    suspend fun getMovieDetail(movieId: Int, apiKey: String): MovieModel
+    suspend fun searchMovie(apiKey: String, query: String): List<MovieModel>
 }

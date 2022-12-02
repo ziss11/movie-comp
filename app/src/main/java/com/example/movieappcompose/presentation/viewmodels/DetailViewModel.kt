@@ -9,7 +9,9 @@ class DetailViewModel(
     private val getRecommendedMovies: GetRecommendedMovies,
 ) :
     ViewModel() {
-    fun fetchMovieDetail(movieId: Int, apiKey: String) = getMovieDetail.execute(movieId, apiKey)
-    fun fetchRecommendationMovies(movieId: Int, apiKey: String) =
+    suspend fun fetchMovieDetail(movieId: Int, apiKey: String) =
+        getMovieDetail.execute(movieId, apiKey)
+
+    suspend fun fetchRecommendationMovies(movieId: Int, apiKey: String) =
         getRecommendedMovies.execute(movieId, apiKey)
 }

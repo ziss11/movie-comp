@@ -21,7 +21,7 @@ data class MovieModel(
     @field:SerializedName("backdrop_path")
     val backdropPath: String? = null,
 
-    @field:SerializedName("genre_ids")
+    @field:SerializedName("genres")
     val genres: List<GenreModel>? = listOf(),
 
     @field:SerializedName("tagline")

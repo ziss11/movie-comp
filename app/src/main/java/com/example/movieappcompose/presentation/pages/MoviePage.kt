@@ -1,5 +1,6 @@
 package com.example.movieappcompose.presentation.pages
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,10 +18,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.R
 import com.example.movieappcompose.ViewModelFactory
 import com.example.movieappcompose.data.models.MovieModel
@@ -28,7 +27,6 @@ import com.example.movieappcompose.presentation.components.ContentSection
 import com.example.movieappcompose.presentation.components.MovieCard
 import com.example.movieappcompose.presentation.components.MovieTile
 import com.example.movieappcompose.presentation.components.SectionText
-import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.presentation.viewmodels.MovieViewModel
 import com.example.movieappcompose.utilities.ResultState
 
@@ -37,7 +35,7 @@ fun MoviePage(
     modifier: Modifier = Modifier,
     viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
-    val popularMoviesResult = viewModel.fetchPopularMovies(BuildConfig.API_KEY)
+    val popularMoviesResult: ResultState<List<MovieModel>> = viewModel.popularMoviesResult
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -49,10 +47,11 @@ fun MoviePage(
                 title = "Popular Movie",
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
+                Log.d("Movie Page", popularMoviesResult.toString())
                 when (popularMoviesResult) {
                     is ResultState.Loading -> LoadingScreen()
                     is ResultState.Success -> PopularMovieResultScreen(popularMoviesResult.data)
-                    is ResultState.Error -> ErrorScreen(retryAction = {})
+                    is ResultState.Error -> ErrorScreen()
                 }
             }
         }
@@ -113,7 +112,7 @@ fun MoviePageTopBar(modifier: Modifier = Modifier) {
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
+        modifier = modifier.fillMaxWidth()
     ) {
         CircularProgressIndicator(color = MaterialTheme.colors.primary)
     }
@@ -139,23 +138,20 @@ fun PopularMovieResultScreen(
 }
 
 @Composable
-fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+fun ErrorScreen(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier.fillMaxWidth()
     ) {
         Text(stringResource(R.string.load_failed))
-        Button(onClick = retryAction) {
-            Text(stringResource(R.string.reload))
-        }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun MoviePagePreview() {
-    MovieAppComposeTheme {
-        MoviePage()
-    }
-}
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun MoviePagePreview() {
+//    MovieAppComposeTheme {
+//        val mockData = ResultState<List<MovieModel>>(List(10) { MovieModel() })
+//        MoviePage()
+//    }
+//}

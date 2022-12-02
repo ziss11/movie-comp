@@ -7,19 +7,21 @@ import com.example.movieappcompose.domain.repositories.MovieRepository
 class MovieRepositoryImpl private constructor(
     private val remoteDataSource: MovieRemoteDataSource
 ) : MovieRepository {
-    override fun getPopularMovies(apiKey: String) = remoteDataSource.getPopularMovies(apiKey)
+    override suspend fun getPopularMovies(apiKey: String) =
+        remoteDataSource.getPopularMovies(apiKey)
 
-    override fun getNowPlayingMovies(apiKey: String) = remoteDataSource.getNowPlayingMovies(apiKey)
+    override suspend fun getNowPlayingMovies(apiKey: String) =
+        remoteDataSource.getNowPlayingMovies(apiKey)
 
-    override fun getRecommendedMoviesById(
+    override suspend fun getRecommendedMoviesById(
         movieId: Int,
         apiKey: String
     ) = remoteDataSource.getRecommendedMoviesById(movieId, apiKey)
 
-    override fun getMovieDetail(movieId: Int, apiKey: String) =
+    override suspend fun getMovieDetail(movieId: Int, apiKey: String) =
         remoteDataSource.getMovieDetail(movieId, apiKey)
 
-    override fun searchMovie(
+    override suspend fun searchMovie(
         apiKey: String,
         query: String
     ) = remoteDataSource.searchMovie(apiKey, query)
