@@ -1,4 +1,4 @@
-package com.example.movieappcompose.presentation.navigation
+package com.example.movieappcompose.utilities
 
 sealed class Screen(val route: String) {
     object Movie : Screen("movie")

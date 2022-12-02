@@ -21,7 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.movieappcompose.R
 import com.example.movieappcompose.presentation.navigation.NavigationItem
-import com.example.movieappcompose.presentation.navigation.Screen
+import com.example.movieappcompose.utilities.Screen
 import com.example.movieappcompose.presentation.pages.*
 import com.example.movieappcompose.presentation.theme.Grey
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
