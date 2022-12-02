@@ -72,6 +72,47 @@ fun DetailPage(
 }
 
 @Composable
+fun DetailTopBar(
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TopAppBar(
+        backgroundColor = MaterialTheme.colors.surface,
+        elevation = 0.dp,
+        navigationIcon = {
+            IconButton(
+                onClick = navigateBack,
+            ) {
+                Icon(
+                    Icons.Default.ArrowBackIosNew,
+                    contentDescription = stringResource(id = R.string.go_to_previous_page)
+                )
+            }
+        },
+        title = {
+            Text(
+                text = stringResource(id = R.string.detail_top_bar_title),
+                style = MaterialTheme.typography.h5.copy(
+                    fontWeight = FontWeight.Medium,
+                ),
+            )
+        },
+        actions = {
+            IconButton(
+                onClick = {},
+            ) {
+                Icon(
+                    imageVector = Icons.Default.BookmarkBorder,
+                    tint = MaterialTheme.colors.onSurface,
+                    contentDescription = stringResource(id = R.string.search_desc)
+                )
+            }
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
 fun DetailContent(
     imageUrl: String,
     title: String,
@@ -165,47 +206,6 @@ fun GenreItem(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
         )
     }
-}
-
-@Composable
-fun DetailTopBar(
-    navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 0.dp,
-        navigationIcon = {
-            IconButton(
-                onClick = navigateBack,
-            ) {
-                Icon(
-                    Icons.Default.ArrowBackIosNew,
-                    contentDescription = stringResource(id = R.string.go_to_previous_page)
-                )
-            }
-        },
-        title = {
-            Text(
-                text = stringResource(id = R.string.detail_top_bar_title),
-                style = MaterialTheme.typography.h5.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-            )
-        },
-        actions = {
-            IconButton(
-                onClick = {},
-            ) {
-                Icon(
-                    imageVector = Icons.Default.BookmarkBorder,
-                    tint = MaterialTheme.colors.onSurface,
-                    contentDescription = stringResource(id = R.string.search_desc)
-                )
-            }
-        },
-        modifier = modifier
-    )
 }
 
 @Preview(

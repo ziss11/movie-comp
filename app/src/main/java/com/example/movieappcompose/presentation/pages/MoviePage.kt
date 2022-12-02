@@ -81,7 +81,7 @@ fun MoviePage(
 fun MoviePageTopBar(modifier: Modifier = Modifier) {
     TopAppBar(
         backgroundColor = MaterialTheme.colors.surface,
-        elevation = 4.dp,
+        elevation = 0.dp,
         title = {
             Text(
                 text = stringResource(id = R.string.movie_top_bar_title),
