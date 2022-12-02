@@ -1,5 +1,6 @@
 package com.example.movieappcompose.data.repositories
 
+import com.example.movieappcompose.Injection.provideMovieRemoteDatasource
 import com.example.movieappcompose.data.datasources.MovieRemoteDataSource
 import com.example.movieappcompose.domain.repositories.MovieRepository
 
@@ -22,4 +23,12 @@ class MovieRepositoryImpl private constructor(
         apiKey: String,
         query: String
     ) = remoteDataSource.searchMovie(apiKey, query)
+
+    companion object {
+        private var instance: MovieRepositoryImpl? = null
+
+        fun getInstance() = instance ?: synchronized(this) {
+            instance ?: MovieRepositoryImpl(provideMovieRemoteDatasource())
+        }.also { instance = it }
+    }
 }

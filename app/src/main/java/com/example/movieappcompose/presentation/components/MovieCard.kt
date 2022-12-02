@@ -1,6 +1,5 @@
 package com.example.movieappcompose.presentation.components
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,17 +7,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import com.example.movieappcompose.BuildConfig
 
 @Composable
 fun MovieCard(
-    @DrawableRes image: Int,
+    imageUrl: String,
     contentDescription: String,
     modifier: Modifier = Modifier,
 ) {
-    Image(
-        painter = painterResource(image),
+    AsyncImage(
+        model = BuildConfig.IMAGE_BASE_URL + imageUrl,
         contentDescription = contentDescription,
         contentScale = ContentScale.Fit,
         modifier = modifier

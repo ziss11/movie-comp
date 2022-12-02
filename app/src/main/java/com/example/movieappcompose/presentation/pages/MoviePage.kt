@@ -4,11 +4,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -17,15 +19,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.R
+import com.example.movieappcompose.ViewModelFactory
+import com.example.movieappcompose.data.models.MovieModel
 import com.example.movieappcompose.presentation.components.ContentSection
 import com.example.movieappcompose.presentation.components.MovieCard
 import com.example.movieappcompose.presentation.components.MovieTile
 import com.example.movieappcompose.presentation.components.SectionText
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
+import com.example.movieappcompose.presentation.viewmodels.MovieViewModel
+import com.example.movieappcompose.utilities.ResultState
 
 @Composable
-fun MoviePage(modifier: Modifier = Modifier) {
+fun MoviePage(
+    modifier: Modifier = Modifier,
+    viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
+) {
+    val popularMoviesResult = viewModel.fetchPopularMovies(BuildConfig.API_KEY)
+
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -36,16 +49,10 @@ fun MoviePage(modifier: Modifier = Modifier) {
                 title = "Popular Movie",
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(24.dp),
-                ) {
-                    items(count = 5) {
-                        MovieCard(
-                            image = R.drawable.example_movie1,
-                            contentDescription = "Avatar",
-                        )
-                    }
+                when (popularMoviesResult) {
+                    is ResultState.Loading -> LoadingScreen()
+                    is ResultState.Success -> PopularMovieResultScreen(popularMoviesResult.data)
+                    is ResultState.Error -> ErrorScreen(retryAction = {})
                 }
             }
         }
@@ -71,6 +78,7 @@ fun MoviePage(modifier: Modifier = Modifier) {
             )
         }
     }
+
 }
 
 @Composable
@@ -101,6 +109,48 @@ fun MoviePageTopBar(modifier: Modifier = Modifier) {
     )
 }
 
+@Composable
+fun LoadingScreen(modifier: Modifier = Modifier) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = modifier
+    ) {
+        CircularProgressIndicator(color = MaterialTheme.colors.primary)
+    }
+}
+
+@Composable
+fun PopularMovieResultScreen(
+    popularMovies: List<MovieModel>,
+    modifier: Modifier = Modifier,
+) {
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        modifier = modifier,
+    ) {
+        items(popularMovies) { item ->
+            MovieCard(
+                imageUrl = item.posterPath.toString(),
+                contentDescription = item.title.toString(),
+            )
+        }
+    }
+}
+
+@Composable
+fun ErrorScreen(retryAction: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(stringResource(R.string.load_failed))
+        Button(onClick = retryAction) {
+            Text(stringResource(R.string.reload))
+        }
+    }
+}
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

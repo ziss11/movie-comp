@@ -28,7 +28,8 @@ import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 
 @Composable
 fun MovieApp(
-    modifier: Modifier = Modifier, navController: NavHostController = rememberNavController()
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController(),
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route

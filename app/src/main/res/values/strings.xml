@@ -16,4 +16,6 @@
     <string name="my_email">abdul.azizz1108@gmail.com</string>
     <string name="movie_popularity">Movie Popularity</string>
     <string name="remove_bookmark">Remove movie from bookmark</string>
+    <string name="load_failed">Data Empty</string>
+    <string name="reload">Reload</string>
 </resources>
