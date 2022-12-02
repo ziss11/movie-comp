@@ -1,21 +1,15 @@
 package com.example.movieappcompose.presentation.pages
 
-import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,7 +29,8 @@ fun MoviePage(
     modifier: Modifier = Modifier,
     viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
-    val popularMoviesResult: ResultState<List<MovieModel>> = viewModel.popularMoviesResult
+    val nowPlayingMoviesResult: ResultState<List<MovieModel>> = viewModel.getNowPlayingMoviesResult
+    val topRatedMoviesResult: ResultState<List<MovieModel>> = viewModel.topRatedMoviesResult
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -44,40 +39,37 @@ fun MoviePage(
     ) {
         item {
             ContentSection(
-                title = "Popular Movie",
+                title = "Now Playing",
                 modifier = Modifier.padding(bottom = 16.dp)
             ) {
-                Log.d("Movie Page", popularMoviesResult.toString())
-                when (popularMoviesResult) {
+                when (nowPlayingMoviesResult) {
                     is ResultState.Loading -> LoadingScreen()
-                    is ResultState.Success -> PopularMovieResultScreen(popularMoviesResult.data)
+                    is ResultState.Success -> PopularMovieResultScreen(nowPlayingMoviesResult.data)
                     is ResultState.Error -> ErrorScreen()
                 }
             }
         }
         item {
-            SectionText(text = "Recommended Movie")
+            SectionText(text = "Top Rated Movie")
         }
-        items(count = 5) {
-            MovieTile(
-                leading = {
-                    Image(
-                        painter = painterResource(id = R.drawable.example_movie1),
-                        contentDescription = null,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(12.dp))
-                            .height(76.dp)
-                            .width(76.dp)
+        when (topRatedMoviesResult) {
+            is ResultState.Loading -> {
+                item { LoadingScreen() }
+            }
+            is ResultState.Success -> {
+                items(topRatedMoviesResult.data) { item ->
+                    NowPlayingMovieResultScreen(
+                        imageUrl = item.posterPath.toString(),
+                        title = item.title.toString(),
+                        overview = item.overview.toString(),
                     )
-                },
-                title = "Avatar",
-                subtitle = "Afgkg gjggjkgkgglggblgbljv b bjbfbngb jggb gbnjgdnvdbgjgbj",
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
+                }
+            }
+            is ResultState.Error -> {
+                item { ErrorScreen() }
+            }
         }
     }
-
 }
 
 @Composable
@@ -135,6 +127,21 @@ fun PopularMovieResultScreen(
             )
         }
     }
+}
+
+@Composable
+fun NowPlayingMovieResultScreen(
+    imageUrl: String,
+    title: String,
+    overview: String,
+    modifier: Modifier = Modifier
+) {
+    MovieTile(
+        imageUrl = imageUrl,
+        title = title,
+        subtitle = overview,
+        modifier = modifier.padding(horizontal = 16.dp),
+    )
 }
 
 @Composable

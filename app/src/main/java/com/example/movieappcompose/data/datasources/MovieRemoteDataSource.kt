@@ -5,7 +5,7 @@ import com.example.movieappcompose.data.datasources.service.ApiService
 import com.example.movieappcompose.data.models.MovieModel
 
 interface MovieRemoteDataSource {
-    suspend fun getPopularMovies(apiKey: String): List<MovieModel>
+    suspend fun getTopRatedMovies(apiKey: String): List<MovieModel>
     suspend fun getNowPlayingMovies(apiKey: String): List<MovieModel>
     suspend fun getRecommendedMoviesById(movieId: Int, apiKey: String): List<MovieModel>
     suspend fun getMovieDetail(movieId: Int, apiKey: String): MovieModel
@@ -15,8 +15,8 @@ interface MovieRemoteDataSource {
 class MovieRemoteDataSourceImpl private constructor(private val apiService: ApiService) :
     MovieRemoteDataSource {
 
-    override suspend fun getPopularMovies(apiKey: String): List<MovieModel> {
-        return apiService.getPopularMovies(apiKey).results ?: listOf()
+    override suspend fun getTopRatedMovies(apiKey: String): List<MovieModel> {
+        return apiService.getTopRatedMovies(apiKey).results ?: listOf()
     }
 
     override suspend fun getNowPlayingMovies(apiKey: String): List<MovieModel> {

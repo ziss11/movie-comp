@@ -33,8 +33,8 @@ object Injection {
         return GetNowPlayingMovies.getInstance()
     }
 
-    fun provideGetPopularMovies(): GetPopularMovies {
-        return GetPopularMovies.getInstance()
+    fun provideGetTopRatedMovies(): GetTopRatedMovies {
+        return GetTopRatedMovies.getInstance()
     }
 
     fun provideGetRecommendedMovies(): GetRecommendedMovies {
