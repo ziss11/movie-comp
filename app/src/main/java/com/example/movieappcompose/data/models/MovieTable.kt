@@ -11,6 +11,8 @@ data class MovieTable(
     val title: String,
     val overview: String? = null,
 ) {
+    constructor(movie: Movie): this(movie.id, movie.title, movie.overview)
+
     fun toEntity() = Movie(
         id = id,
         title = title,

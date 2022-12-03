@@ -95,7 +95,9 @@ fun SearchTopBar(
         actions = {
             TextButton(
                 onClick = navigateBack,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .height(52.dp)
             ) {
                 Text(
                     text = stringResource(id = R.string.cancel),
@@ -153,7 +155,7 @@ fun SearchBar(
         },
         modifier = modifier
             .fillMaxWidth()
-            .height(50.dp)
+            .height(52.dp)
             .clip(RoundedCornerShape(16.dp))
     )
 }
@@ -172,7 +174,7 @@ fun SearchedMoviesContent(
         items(searchedMovies) { item ->
             MovieTile(
                 imageUrl = item.posterPath ?: "",
-                title = item.title ?: "",
+                title = item.title,
                 subtitle = item.overview ?: "",
                 onClick = { navigateToDetail(item.id) },
                 modifier = modifier.padding(horizontal = 16.dp),

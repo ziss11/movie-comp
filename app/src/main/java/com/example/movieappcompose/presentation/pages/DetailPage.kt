@@ -64,7 +64,7 @@ fun DetailPage(
                 DetailContent(
                     id = data.id,
                     imageUrl = data.backdropPath ?: "",
-                    title = data.title ?: "",
+                    title = data.title,
                     tagline = data.tagline,
                     genres = data.genres,
                     overview = data.overview ?: "",
@@ -258,7 +258,7 @@ fun RecommendationMovieContent(
         items(recommendationMovies) { item ->
             MovieCard(
                 imageUrl = item.posterPath ?: "",
-                contentDescription = item.title ?: "",
+                contentDescription = item.title,
                 onClick = { navigateToDetail(item.id) },
             )
         }

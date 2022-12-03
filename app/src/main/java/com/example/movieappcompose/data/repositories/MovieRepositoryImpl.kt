@@ -5,6 +5,7 @@ import com.example.movieappcompose.Injection.provideMovieLocalDataSource
 import com.example.movieappcompose.Injection.provideMovieRemoteDataSource
 import com.example.movieappcompose.data.datasources.MovieLocalDataSource
 import com.example.movieappcompose.data.datasources.MovieRemoteDataSource
+import com.example.movieappcompose.data.models.MovieTable
 import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.domain.repositories.MovieRepository
 
@@ -32,19 +33,19 @@ class MovieRepositoryImpl private constructor(
     ) = remoteDataSource.searchMovie(apiKey, query).map { it.toEntity() }
 
     override suspend fun getWatchlistMovies(): List<Movie> {
-        TODO("Not yet implemented")
+        return localDataSource.getWatchlistMovies().map { it.toEntity() }
     }
 
     override suspend fun isWatchlist(id: Int): Boolean {
-        TODO("Not yet implemented")
+        return localDataSource.isWatchlist(id)
     }
 
-    override suspend fun addWatchlistMovie() {
-        TODO("Not yet implemented")
+    override suspend fun addWatchlistMovie(movie: Movie) {
+        localDataSource.addWatchlistMovie(MovieTable(movie = movie))
     }
 
-    override suspend fun remoteWatchlistMovie() {
-        TODO("Not yet implemented")
+    override suspend fun removeWatchlistMovie(id: Int) {
+        localDataSource.removeWatchlistMovie(id)
     }
 
     companion object {

@@ -1,5 +1,6 @@
 package com.example.movieappcompose.domain.repositories
 
+import com.example.movieappcompose.data.models.MovieTable
 import com.example.movieappcompose.domain.entities.Movie
 
 interface MovieRepository {
@@ -13,6 +14,6 @@ interface MovieRepository {
     // local
     suspend fun getWatchlistMovies(): List<Movie>
     suspend fun isWatchlist(id: Int): Boolean
-    suspend fun addWatchlistMovie()
-    suspend fun remoteWatchlistMovie()
+    suspend fun addWatchlistMovie(movie: Movie)
+    suspend fun removeWatchlistMovie(id: Int)
 }

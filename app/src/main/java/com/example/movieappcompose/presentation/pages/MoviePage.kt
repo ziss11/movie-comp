@@ -66,7 +66,7 @@ fun MoviePage(
                     NowPlayingMovieResultScreen(
                         id = item.id,
                         imageUrl = item.posterPath ?: "",
-                        title = item.title ?: "",
+                        title = item.title,
                         overview = item.overview ?: "",
                         navigateToDetail = navigateToDetail,
                     )
@@ -125,7 +125,7 @@ fun PopularMovieResultScreen(
         items(popularMovies) { item ->
             MovieCard(
                 imageUrl = item.posterPath ?: "",
-                contentDescription = item.title ?: "",
+                contentDescription = item.title,
                 onClick = { navigateToDetail(item.id) },
             )
         }
