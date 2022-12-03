@@ -31,13 +31,14 @@ fun MoviePage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
+    val query by viewModel.query
+
     val topRatedMoviesResult by viewModel.fetchTopRatedMovies()
         .observeAsState(initial = ResultState.Loading)
     val nowPlayingMoviesResult by viewModel.fetchNowPlayingMovies()
         .observeAsState(initial = ResultState.Loading)
-    val searchMoviesResult = viewModel.searchMovieResult
-
-    val query by viewModel.query
+    val searchMoviesResult by viewModel.searchMovies(query)
+        .observeAsState(initial = ResultState.Loading)
 
     LazyColumn(
         contentPadding = PaddingValues(bottom = 16.dp),
@@ -59,7 +60,7 @@ fun MoviePage(
         when (searchMoviesResult) {
             is ResultState.Loading -> item { LoadingScreen() }
             is ResultState.Success -> {
-                val data = searchMoviesResult.data
+                val data = (searchMoviesResult as ResultState.Success<List<Movie>>).data
 
                 if (data.isNotEmpty()) {
                     searchedMoviesScreen(

@@ -31,8 +31,8 @@ interface ApiService {
     ): Call<MovieModel>
 
     @GET("search/movie ")
-    suspend fun searchMovie(
+    fun searchMovie(
         @Query("api_key") apiKey: String,
         @Query("query") query: String,
-    ): MovieResponse
+    ): Call<MovieResponse>
 }

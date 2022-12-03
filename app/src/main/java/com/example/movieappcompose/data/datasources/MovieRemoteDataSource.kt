@@ -11,7 +11,7 @@ interface MovieRemoteDataSource {
     fun getNowPlayingMovies(apiKey: String): Call<MovieResponse>
     fun getRecommendedMoviesById(movieId: Int, apiKey: String): Call<MovieResponse>
     fun getMovieDetail(movieId: Int, apiKey: String): Call<MovieModel>
-    suspend fun searchMovie(apiKey: String, query: String): List<MovieModel>
+    fun searchMovie(apiKey: String, query: String): Call<MovieResponse>
 }
 
 class MovieRemoteDataSourceImpl private constructor(private val apiService: ApiService) :
@@ -30,8 +30,8 @@ class MovieRemoteDataSourceImpl private constructor(private val apiService: ApiS
     override fun getMovieDetail(movieId: Int, apiKey: String) =
         apiService.getMovieDetail(movieId, apiKey)
 
-    override suspend fun searchMovie(apiKey: String, query: String) =
-        apiService.searchMovie(apiKey, query).results ?: listOf()
+    override fun searchMovie(apiKey: String, query: String) =
+        apiService.searchMovie(apiKey, query)
 
     companion object {
         private var instance: MovieRemoteDataSourceImpl? = null

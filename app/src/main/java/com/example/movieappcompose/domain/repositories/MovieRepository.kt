@@ -10,7 +10,7 @@ interface MovieRepository {
     fun getNowPlayingMovies(apiKey: String): LiveData<ResultState<List<Movie>>>
     fun getRecommendedMoviesById(movieId: Int, apiKey: String): LiveData<ResultState<List<Movie>>>
     fun getMovieDetail(movieId: Int, apiKey: String): LiveData<ResultState<Movie>>
-    suspend fun searchMovie(apiKey: String, query: String): List<Movie>
+    fun searchMovie(apiKey: String, query: String): LiveData<ResultState<List<Movie>>>
 
     // local
     fun getWatchlistMovies(): LiveData<ResultState<List<Movie>>>
