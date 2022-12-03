@@ -18,7 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movieappcompose.R
-import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.presentation.ViewModelFactory
 import com.example.movieappcompose.presentation.components.ErrorScreen
 import com.example.movieappcompose.presentation.components.LoadingScreen
@@ -159,7 +159,7 @@ fun SearchBar(
 
 @Composable
 fun SearchedMoviesContent(
-    searchedMovies: List<MovieModel>,
+    searchedMovies: List<Movie>,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -170,9 +170,9 @@ fun SearchedMoviesContent(
     ) {
         items(searchedMovies) { item ->
             MovieTile(
-                imageUrl = item.posterPath.toString(),
-                title = item.title.toString(),
-                subtitle = item.overview.toString(),
+                imageUrl = item.posterPath,
+                title = item.title,
+                subtitle = item.overview,
                 onClick = { navigateToDetail(item.id) },
                 modifier = modifier.padding(horizontal = 16.dp),
             )

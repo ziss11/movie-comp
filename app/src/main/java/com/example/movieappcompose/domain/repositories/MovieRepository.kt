@@ -1,11 +1,11 @@
 package com.example.movieappcompose.domain.repositories
 
-import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.domain.entities.Movie
 
 interface MovieRepository {
-    suspend fun getTopRatedMovies(apiKey: String): List<MovieModel>
-    suspend fun getNowPlayingMovies(apiKey: String): List<MovieModel>
-    suspend fun getRecommendedMoviesById(movieId: Int, apiKey: String): List<MovieModel>
-    suspend fun getMovieDetail(movieId: Int, apiKey: String): MovieModel
-    suspend fun searchMovie(apiKey: String, query: String): List<MovieModel>
+    suspend fun getTopRatedMovies(apiKey: String): List<Movie>
+    suspend fun getNowPlayingMovies(apiKey: String): List<Movie>
+    suspend fun getRecommendedMoviesById(movieId: Int, apiKey: String): List<Movie>
+    suspend fun getMovieDetail(movieId: Int, apiKey: String): Movie
+    suspend fun searchMovie(apiKey: String, query: String): List<Movie>
 }

@@ -1,5 +1,6 @@
 package com.example.movieappcompose.data.models
 
+import com.example.movieappcompose.domain.entities.Movie
 import com.google.gson.annotations.SerializedName
 
 data class MovieModel(
@@ -12,9 +13,6 @@ data class MovieModel(
     @field:SerializedName("overview")
     val overview: String? = null,
 
-    @field:SerializedName("popularity")
-    val popularity: Double = 0.0,
-
     @field:SerializedName("poster_path")
     val posterPath: String? = null,
 
@@ -26,7 +24,14 @@ data class MovieModel(
 
     @field:SerializedName("tagline")
     val tagline: String? = null,
-
-    @field:SerializedName("release_date")
-    val releaseDate: String? = null,
-)
+) {
+    fun toEntity() = Movie(
+        id = id,
+        title = title ?: "",
+        overview = overview ?: "",
+        posterPath = posterPath ?: "",
+        backdropPath = backdropPath ?: "",
+        genres = genres?.map { it.toEntity() } ?: listOf(),
+        tagline = tagline ?: "",
+    )
+}

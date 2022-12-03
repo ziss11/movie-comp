@@ -27,8 +27,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.R
-import com.example.movieappcompose.data.models.GenreModel
-import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.domain.entities.Genre
+import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.presentation.ViewModelFactory
 import com.example.movieappcompose.presentation.components.ContentSection
 import com.example.movieappcompose.presentation.components.ErrorScreen
@@ -47,7 +47,7 @@ fun DetailPage(
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
-    val movieDetailResult: ResultState<MovieModel> = viewModel.movieDetailResult
+    val movieDetailResult = viewModel.movieDetailResult
 
     Scaffold(
         topBar = { DetailTopBar(navigateBack = navigateBack) },
@@ -62,11 +62,11 @@ fun DetailPage(
                 val data = movieDetailResult.data
                 DetailContent(
                     id = data.id,
-                    imageUrl = data.backdropPath.toString(),
-                    title = data.title.toString(),
+                    imageUrl = data.backdropPath,
+                    title = data.title,
                     tagline = data.tagline,
-                    genres = data.genres ?: listOf(),
-                    overview = data.overview.toString(),
+                    genres = data.genres ,
+                    overview = data.overview,
                     viewModel = viewModel,
                     navigateToDetail = navigateAnotherDetail,
                     modifier = Modifier.padding(innerPadding)
@@ -125,14 +125,13 @@ fun DetailContent(
     imageUrl: String,
     title: String,
     tagline: String?,
-    genres: List<GenreModel>?,
+    genres: List<Genre>?,
     overview: String,
     viewModel: DetailViewModel,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val recommendationMoviesResult: ResultState<List<MovieModel>> =
-        viewModel.recommendationMoviesResult
+    val recommendationMoviesResult = viewModel.recommendationMoviesResult
 
     Column(
         modifier = modifier
@@ -246,7 +245,7 @@ fun GenreItem(
 
 @Composable
 fun RecommendationMovieContent(
-    recommendationMovies: List<MovieModel>,
+    recommendationMovies: List<Movie>,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -257,8 +256,8 @@ fun RecommendationMovieContent(
     ) {
         items(recommendationMovies) { item ->
             MovieCard(
-                imageUrl = item.posterPath.toString(),
-                contentDescription = item.title.toString(),
+                imageUrl = item.posterPath,
+                contentDescription = item.title,
                 onClick = { navigateToDetail(item.id) },
             )
         }

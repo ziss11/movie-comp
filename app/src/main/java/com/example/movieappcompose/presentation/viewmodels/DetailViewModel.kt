@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieappcompose.BuildConfig
-import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.domain.usecase.GetMovieDetail
 import com.example.movieappcompose.domain.usecase.GetRecommendedMovies
 import com.example.movieappcompose.utilities.ResultState
@@ -19,10 +19,10 @@ class DetailViewModel(
     private val getRecommendedMovies: GetRecommendedMovies,
 ) :
     ViewModel() {
-    var movieDetailResult: ResultState<MovieModel> by mutableStateOf(ResultState.Loading)
+    var movieDetailResult: ResultState<Movie> by mutableStateOf(ResultState.Loading)
         private set
 
-    var recommendationMoviesResult: ResultState<List<MovieModel>> by mutableStateOf(ResultState.Loading)
+    var recommendationMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
         private set
 
     fun fetchMovieDetail(movieId: Int, apiKey: String = BuildConfig.API_KEY) {

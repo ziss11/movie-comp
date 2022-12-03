@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieappcompose.BuildConfig
-import com.example.movieappcompose.data.models.MovieModel
+import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.domain.usecase.GetNowPlayingMovies
 import com.example.movieappcompose.domain.usecase.GetTopRatedMovies
 import com.example.movieappcompose.utilities.ResultState
@@ -18,10 +18,10 @@ class MovieViewModel(
     private val getTopRatedMovies: GetTopRatedMovies,
     private val getNowPlayingMovies: GetNowPlayingMovies
 ) : ViewModel() {
-    var topRatedMoviesResult: ResultState<List<MovieModel>> by mutableStateOf(ResultState.Loading)
+    var topRatedMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
         private set
 
-    var nowPlayingMoviesResult: ResultState<List<MovieModel>> by mutableStateOf(ResultState.Loading)
+    var nowPlayingMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
         private set
 
     init {

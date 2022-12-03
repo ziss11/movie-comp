@@ -16,8 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.movieappcompose.R
+import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.presentation.ViewModelFactory
-import com.example.movieappcompose.data.models.MovieModel
 import com.example.movieappcompose.presentation.components.*
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.presentation.viewmodels.MovieViewModel
@@ -29,8 +29,8 @@ fun MoviePage(
     modifier: Modifier = Modifier,
     viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
 ) {
-    val nowPlayingMoviesResult: ResultState<List<MovieModel>> = viewModel.nowPlayingMoviesResult
-    val topRatedMoviesResult: ResultState<List<MovieModel>> = viewModel.topRatedMoviesResult
+    val nowPlayingMoviesResult = viewModel.nowPlayingMoviesResult
+    val topRatedMoviesResult = viewModel.topRatedMoviesResult
 
     LazyColumn(
         contentPadding = PaddingValues(vertical = 16.dp),
@@ -64,9 +64,9 @@ fun MoviePage(
                 items(topRatedMoviesResult.data) { item ->
                     NowPlayingMovieResultScreen(
                         id = item.id,
-                        imageUrl = item.posterPath.toString(),
-                        title = item.title.toString(),
-                        overview = item.overview.toString(),
+                        imageUrl = item.posterPath,
+                        title = item.title,
+                        overview = item.overview,
                         navigateToDetail = navigateToDetail,
                     )
                 }
@@ -113,7 +113,7 @@ fun MoviePageTopBar(
 @Composable
 fun PopularMovieResultScreen(
     navigateToDetail: (Int) -> Unit,
-    popularMovies: List<MovieModel>,
+    popularMovies: List<Movie>,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -123,8 +123,8 @@ fun PopularMovieResultScreen(
     ) {
         items(popularMovies) { item ->
             MovieCard(
-                imageUrl = item.posterPath.toString(),
-                contentDescription = item.title.toString(),
+                imageUrl = item.posterPath,
+                contentDescription = item.title,
                 onClick = { navigateToDetail(item.id) },
             )
         }
