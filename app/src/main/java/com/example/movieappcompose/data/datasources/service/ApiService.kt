@@ -25,10 +25,10 @@ interface ApiService {
     ): Call<MovieResponse>
 
     @GET("movie/{movie_id}")
-    suspend fun getMovieDetail(
+    fun getMovieDetail(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String,
-    ): MovieModel
+    ): Call<MovieModel>
 
     @GET("search/movie ")
     suspend fun searchMovie(

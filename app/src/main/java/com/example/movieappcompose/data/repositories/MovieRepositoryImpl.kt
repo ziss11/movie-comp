@@ -10,6 +10,7 @@ import com.example.movieappcompose.Injection.provideMovieLocalDataSource
 import com.example.movieappcompose.Injection.provideMovieRemoteDataSource
 import com.example.movieappcompose.data.datasources.MovieLocalDataSource
 import com.example.movieappcompose.data.datasources.MovieRemoteDataSource
+import com.example.movieappcompose.data.models.MovieModel
 import com.example.movieappcompose.data.models.MovieResponse
 import com.example.movieappcompose.data.models.MovieTable
 import com.example.movieappcompose.domain.entities.Movie
@@ -26,6 +27,7 @@ class MovieRepositoryImpl private constructor(
     private val nowPlayingRatedResult = MediatorLiveData<ResultState<List<Movie>>>()
     private val topRatedResult = MediatorLiveData<ResultState<List<Movie>>>()
     private val recommendedResult = MediatorLiveData<ResultState<List<Movie>>>()
+    private val detailResult = MediatorLiveData<ResultState<Movie>>()
 
     override fun getTopRatedMovies(apiKey: String): LiveData<ResultState<List<Movie>>> {
         val client = remoteDataSource.getTopRatedMovies(apiKey)
@@ -79,7 +81,7 @@ class MovieRepositoryImpl private constructor(
         movieId: Int,
         apiKey: String
     ): LiveData<ResultState<List<Movie>>> {
-        val client = remoteDataSource.getNowPlayingMovies(apiKey)
+        val client = remoteDataSource.getRecommendedMoviesById(movieId, apiKey)
         client.enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val responseBody = response.body()
@@ -102,8 +104,28 @@ class MovieRepositoryImpl private constructor(
         return recommendedResult
     }
 
-    override suspend fun getMovieDetail(movieId: Int, apiKey: String) =
-        remoteDataSource.getMovieDetail(movieId, apiKey).toEntity()
+    override fun getMovieDetail(movieId: Int, apiKey: String): LiveData<ResultState<Movie>> {
+        val client = remoteDataSource.getMovieDetail(movieId, apiKey)
+        client.enqueue(object : Callback<MovieModel> {
+            override fun onResponse(call: Call<MovieModel>, response: Response<MovieModel>) {
+                val responseBody = response.body()
+
+                if (response.isSuccessful && responseBody != null) {
+                    detailResult.value = ResultState.Success(responseBody.toEntity())
+                } else {
+                    Log.d(TAG, response.message().toString())
+                    detailResult.value = ResultState.Error
+                }
+            }
+
+            override fun onFailure(call: Call<MovieModel>, t: Throwable) {
+                Log.d(TAG, t.message.toString())
+                detailResult.value = ResultState.Error
+            }
+        })
+
+        return detailResult
+    }
 
     override suspend fun searchMovie(
         apiKey: String, query: String

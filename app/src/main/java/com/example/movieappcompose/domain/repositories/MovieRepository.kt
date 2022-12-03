@@ -9,7 +9,7 @@ interface MovieRepository {
     fun getTopRatedMovies(apiKey: String): LiveData<ResultState<List<Movie>>>
     fun getNowPlayingMovies(apiKey: String): LiveData<ResultState<List<Movie>>>
     fun getRecommendedMoviesById(movieId: Int, apiKey: String): LiveData<ResultState<List<Movie>>>
-    suspend fun getMovieDetail(movieId: Int, apiKey: String): Movie
+    fun getMovieDetail(movieId: Int, apiKey: String): LiveData<ResultState<Movie>>
     suspend fun searchMovie(apiKey: String, query: String): List<Movie>
 
     // local

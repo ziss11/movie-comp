@@ -1,17 +1,11 @@
 package com.example.movieappcompose.presentation.viewmodels
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.domain.usecase.*
-import com.example.movieappcompose.utilities.ResultState
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
-import java.io.IOException
 
 class DetailViewModel(
     private val getMovieDetail: GetMovieDetail,
@@ -20,22 +14,8 @@ class DetailViewModel(
     private val addWatchlistMovie: AddWatchlistMovie,
     private val removeWatchlistMovie: RemoveWatchlistMovie,
 ) : ViewModel() {
-    var movieDetailResult: ResultState<Movie> by mutableStateOf(ResultState.Loading)
-        private set
-
-    fun fetchMovieDetail(movieId: Int, apiKey: String = BuildConfig.API_KEY) {
-        viewModelScope.launch {
-            movieDetailResult = try {
-                ResultState.Success(getMovieDetail.execute(movieId, apiKey))
-            } catch (e: IOException) {
-                ResultState.Error
-            } catch (e: HttpException) {
-                ResultState.Error
-            } finally {
-                ResultState.Error
-            }
-        }
-    }
+    fun fetchMovieDetail(movieId: Int, apiKey: String = BuildConfig.API_KEY) =
+        getMovieDetail.execute(movieId, apiKey)
 
     fun fetchRecommendationMovies(movieId: Int, apiKey: String = BuildConfig.API_KEY) =
         getRecommendedMovies.execute(movieId, apiKey)

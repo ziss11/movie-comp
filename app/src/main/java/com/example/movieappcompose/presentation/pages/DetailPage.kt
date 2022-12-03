@@ -51,14 +51,19 @@ fun DetailPage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
-    when (val movieDetailResult = viewModel.movieDetailResult) {
+    val movieDetailResult by viewModel.fetchMovieDetail(movieId)
+        .observeAsState(initial = ResultState.Loading)
+
+    when (movieDetailResult) {
         is ResultState.Loading -> {
             LoadingScreen()
             viewModel.fetchMovieDetail(movieId)
         }
         is ResultState.Success -> {
+            val data = (movieDetailResult as ResultState.Success<Movie>).data
+
             DetailContent(
-                movie = movieDetailResult.data,
+                movie = data,
                 viewModel = viewModel,
                 navigateBack = navigateBack,
                 navigateToDetail = navigateAnotherDetail,
