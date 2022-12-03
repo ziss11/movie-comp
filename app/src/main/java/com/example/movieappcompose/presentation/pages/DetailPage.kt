@@ -10,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.runtime.*
@@ -21,6 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -86,10 +88,7 @@ fun DetailContent(
 
     Scaffold(
         topBar = {
-            BasicTopBar(
-                title = stringResource(id = R.string.detail_top_bar_title),
-                navigateBack = navigateBack,
-            )
+            DetailTopBar(navigateBack = navigateBack)
         },
         modifier = modifier,
     ) { innerPadding ->
@@ -211,6 +210,36 @@ fun DetailContent(
             }
         }
     }
+}
+
+@Composable
+fun DetailTopBar(
+    navigateBack: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    TopAppBar(
+        backgroundColor = MaterialTheme.colors.background,
+        elevation = 0.dp,
+        navigationIcon = {
+            IconButton(
+                onClick = navigateBack,
+            ) {
+                Icon(
+                    Icons.Default.ArrowBackIosNew,
+                    contentDescription = stringResource(id = R.string.go_to_previous_page)
+                )
+            }
+        },
+        title = {
+            Text(
+                text = stringResource(id = R.string.detail_top_bar_title),
+                style = MaterialTheme.typography.h6.copy(
+                    fontWeight = FontWeight.Medium,
+                ),
+            )
+        },
+        modifier = modifier
+    )
 }
 
 @Composable
