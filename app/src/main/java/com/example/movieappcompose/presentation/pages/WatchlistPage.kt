@@ -31,7 +31,6 @@ fun WatchlistPage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
-    viewModel.fetchWatchlistMovies()
     val watchlistMoviesResult by viewModel.fetchWatchlistMovies()
         .observeAsState(initial = ResultState.Loading)
 

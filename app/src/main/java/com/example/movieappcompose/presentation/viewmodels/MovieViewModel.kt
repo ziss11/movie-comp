@@ -22,9 +22,6 @@ class MovieViewModel(
     private val getNowPlayingMovies: GetNowPlayingMovies,
     private val searchMovie: SearchMovie,
 ) : ViewModel() {
-    var topRatedMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
-        private set
-
     var nowPlayingMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
         private set
 
@@ -34,7 +31,6 @@ class MovieViewModel(
     val query: State<String> get() = _query
 
     init {
-        fetchPopularMovies()
         fetchNowPlayingMovies()
     }
 
@@ -52,19 +48,8 @@ class MovieViewModel(
         }
     }
 
-    private fun fetchPopularMovies(apiKey: String = BuildConfig.API_KEY) {
-        viewModelScope.launch {
-            topRatedMoviesResult = try {
-                ResultState.Success(getTopRatedMovies.execute(apiKey))
-            } catch (e: IOException) {
-                ResultState.Error
-            } catch (e: HttpException) {
-                ResultState.Error
-            } finally {
-                ResultState.Error
-            }
-        }
-    }
+    fun fetchTopRatedMovies(apiKey: String = BuildConfig.API_KEY) =
+        getTopRatedMovies.execute(apiKey)
 
     private fun fetchNowPlayingMovies(apiKey: String = BuildConfig.API_KEY) {
         viewModelScope.launch {

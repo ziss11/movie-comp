@@ -2,15 +2,16 @@ package com.example.movieappcompose.data.datasources.service
 
 import com.example.movieappcompose.data.models.MovieModel
 import com.example.movieappcompose.data.models.MovieResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
     @GET("movie/top_rated")
-    suspend fun getTopRatedMovies(
+    fun getTopRatedMovies(
         @Query("api_key") apiKey: String,
-    ): MovieResponse
+    ): Call<MovieResponse>
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(

@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,8 +31,9 @@ fun MoviePage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
+    val topRatedMoviesResult by viewModel.fetchTopRatedMovies()
+        .observeAsState(initial = ResultState.Loading)
     val nowPlayingMoviesResult = viewModel.nowPlayingMoviesResult
-    val topRatedMoviesResult = viewModel.topRatedMoviesResult
     val searchMoviesResult = viewModel.searchMovieResult
 
     val query by viewModel.query
