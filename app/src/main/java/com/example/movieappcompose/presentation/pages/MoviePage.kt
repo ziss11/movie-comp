@@ -28,7 +28,9 @@ import com.example.movieappcompose.utilities.ResultState
 fun MoviePage(
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+    viewModel: MovieViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(LocalContext.current)
+    )
 ) {
     val nowPlayingMoviesResult = viewModel.nowPlayingMoviesResult
     val topRatedMoviesResult = viewModel.topRatedMoviesResult

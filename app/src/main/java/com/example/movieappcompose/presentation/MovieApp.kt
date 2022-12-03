@@ -71,7 +71,11 @@ fun MovieApp(
                 )
             }
             composable(Screen.Watchlist.route) {
-                WatchlistPage()
+                WatchlistPage(
+                    navigateToDetail = { movieId ->
+                        navController.navigate(Screen.Detail.createRoute(movieId))
+                    }
+                )
             }
             composable(Screen.About.route) {
                 AboutPage()

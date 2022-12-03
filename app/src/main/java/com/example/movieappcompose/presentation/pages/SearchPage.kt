@@ -33,7 +33,9 @@ fun SearchPage(
     navigateBack: () -> Unit,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+    viewModel: SearchViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(LocalContext.current)
+    )
 ) {
     val query by viewModel.query
     val searchMoviesResult = viewModel.searchMovieResult
@@ -54,7 +56,6 @@ fun SearchPage(
         modifier = modifier,
     ) {
         when (searchMoviesResult) {
-            is ResultState.Initial -> {}
             is ResultState.Loading -> LoadingScreen()
             is ResultState.Success -> {
                 val data = searchMoviesResult.data
@@ -68,7 +69,7 @@ fun SearchPage(
                     ErrorScreen(text = stringResource(R.string.search_empty))
                 }
             }
-            is ResultState.Error -> {}
+            else -> {}
         }
     }
 }

@@ -46,7 +46,9 @@ fun DetailPage(
     navigateBack: () -> Unit,
     navigateAnotherDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
+    viewModel: DetailViewModel = viewModel(
+        factory = ViewModelFactory.getInstance(LocalContext.current)
+    )
 ) {
     val movieDetailResult = viewModel.movieDetailResult
 
@@ -61,6 +63,7 @@ fun DetailPage(
             }
             is ResultState.Success -> {
                 val data = movieDetailResult.data
+
                 DetailContent(
                     id = data.id,
                     imageUrl = data.backdropPath ?: "",
