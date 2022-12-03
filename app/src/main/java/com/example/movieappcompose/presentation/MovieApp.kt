@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.movieappcompose.R
+import com.example.movieappcompose.presentation.components.BasicTopBar
 import com.example.movieappcompose.presentation.navigation.NavigationItem
 import com.example.movieappcompose.utilities.Screen
 import com.example.movieappcompose.presentation.pages.*
@@ -40,17 +41,19 @@ fun MovieApp(
     Scaffold(
         topBar = {
             when (currentRoute) {
-                Screen.Movie.route -> MoviePageTopBar(
-                    navigateToSearch = {
-                        navController.navigate(Screen.SearchMovies.route)
-                    }
+                Screen.Movie.route -> BasicTopBar(
+                    title = stringResource(id = R.string.movie_top_bar_title)
                 )
-                Screen.Watchlist.route -> WatchlistPageTopBar()
-                Screen.About.route -> AboutPageTopBar()
+                Screen.Watchlist.route -> BasicTopBar(
+                    title = stringResource(id = R.string.watchlist_top_bar_title)
+                )
+                Screen.About.route -> BasicTopBar(
+                    title = stringResource(id = R.string.about_top_bar_title)
+                )
             }
         },
         bottomBar = {
-            if (currentRoute != Screen.Detail.route && currentRoute != Screen.SearchMovies.route) {
+            if (currentRoute != Screen.Detail.route) {
                 BottomBar(navController = navController)
             }
         },
@@ -93,14 +96,6 @@ fun MovieApp(
                     navigateBack = { navController.navigateUp() },
                     navigateAnotherDetail = { anotherMovieId ->
                         navController.navigate(Screen.Detail.createRoute(anotherMovieId))
-                    }
-                )
-            }
-            composable(Screen.SearchMovies.route) {
-                SearchPage(
-                    navigateBack = { navController.navigateUp() },
-                    navigateToDetail = { movieId ->
-                        navController.navigate(Screen.Detail.createRoute(movieId))
                     }
                 )
             }
@@ -148,7 +143,10 @@ fun BottomBar(
 
 @Composable
 fun RowScope.BottomBarItem(
-    label: String, icon: ImageVector, route: String, navController: NavHostController
+    label: String,
+    icon: ImageVector,
+    route: String,
+    navController: NavHostController,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route

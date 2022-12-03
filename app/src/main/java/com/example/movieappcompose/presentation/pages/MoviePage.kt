@@ -3,16 +3,14 @@ package com.example.movieappcompose.presentation.pages
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -34,89 +32,112 @@ fun MoviePage(
 ) {
     val nowPlayingMoviesResult = viewModel.nowPlayingMoviesResult
     val topRatedMoviesResult = viewModel.topRatedMoviesResult
+    val searchMoviesResult = viewModel.searchMovieResult
+
+    val query by viewModel.query
 
     LazyColumn(
-        contentPadding = PaddingValues(vertical = 16.dp),
+        contentPadding = PaddingValues(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
         item {
-            ContentSection(
-                title = "Now Playing",
-                modifier = Modifier.padding(bottom = 16.dp)
-            ) {
-                when (nowPlayingMoviesResult) {
-                    is ResultState.Loading -> LoadingScreen()
-                    is ResultState.Success -> PopularMovieResultScreen(
-                        popularMovies = nowPlayingMoviesResult.data,
-                        navigateToDetail = navigateToDetail,
-                    )
-                    is ResultState.Error -> ErrorScreen(
-                        text = stringResource(R.string.movie_empty)
-                    )
-                    else -> {}
-                }
-            }
+            SearchBar(
+                query = query,
+                onQueryChange = { newQuery ->
+                    viewModel.searchMovies(newQuery = newQuery)
+                },
+                onClearQuery = {
+                    viewModel.searchMovies(newQuery = "")
+                },
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
         }
-        item {
-            SectionText(text = "Top Rated Movie")
-        }
-        when (topRatedMoviesResult) {
-            is ResultState.Loading -> {
-                item { LoadingScreen() }
-            }
+        when (searchMoviesResult) {
+            is ResultState.Loading -> item { LoadingScreen() }
             is ResultState.Success -> {
-                items(topRatedMoviesResult.data) { item ->
-                    NowPlayingMovieResultScreen(
-                        id = item.id,
-                        imageUrl = item.posterPath ?: "",
-                        title = item.title,
-                        overview = item.overview ?: "",
-                        navigateToDetail = navigateToDetail,
-                    )
-                }
+                searchedMoviesScreen(
+                    searchedMovies = searchMoviesResult.data,
+                    navigateToDetail = navigateToDetail,
+                )
             }
-            is ResultState.Error -> {
-                item {
-                    ErrorScreen(
-                        text = stringResource(R.string.movie_empty)
-                    )
-                }
+            else -> {
+                initialMoviesScreen(
+                    nowPlayingMoviesResult = nowPlayingMoviesResult,
+                    topRatedMoviesResult = topRatedMoviesResult,
+                    navigateToDetail = navigateToDetail,
+                )
             }
-            else -> {}
         }
     }
 }
 
-@Composable
-fun MoviePageTopBar(
-    navigateToSearch: () -> Unit,
-    modifier: Modifier = Modifier
+fun LazyListScope.searchedMoviesScreen(
+    searchedMovies: List<Movie>,
+    navigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    TopAppBar(
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 0.dp,
-        title = {
-            Text(
-                text = stringResource(id = R.string.movie_top_bar_title),
-                style = MaterialTheme.typography.h6.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-            )
-        },
-        actions = {
-            IconButton(
-                onClick = navigateToSearch,
-            ) {
-                Icon(
-                    imageVector = Icons.Rounded.Search,
-                    tint = MaterialTheme.colors.onSurface,
-                    contentDescription = stringResource(id = R.string.search_desc)
+    items(searchedMovies) { item ->
+        MovieTile(
+            imageUrl = item.posterPath ?: "",
+            title = item.title,
+            subtitle = item.overview ?: "",
+            onClick = { navigateToDetail(item.id) },
+            modifier = modifier.padding(horizontal = 16.dp),
+        )
+    }
+}
+
+fun LazyListScope.initialMoviesScreen(
+    nowPlayingMoviesResult: ResultState<List<Movie>>,
+    topRatedMoviesResult: ResultState<List<Movie>>,
+    navigateToDetail: (Int) -> Unit,
+) {
+    item {
+        ContentSection(
+            title = "Now Playing",
+            modifier = Modifier.padding(bottom = 16.dp)
+        ) {
+            when (nowPlayingMoviesResult) {
+                is ResultState.Loading -> LoadingScreen()
+                is ResultState.Success -> PopularMovieResultScreen(
+                    popularMovies = nowPlayingMoviesResult.data,
+                    navigateToDetail = navigateToDetail,
+                )
+                is ResultState.Error -> ErrorScreen(
+                    text = stringResource(R.string.movie_empty)
+                )
+                else -> {}
+            }
+        }
+    }
+    item {
+        SectionText(text = "Top Rated Movie")
+    }
+    when (topRatedMoviesResult) {
+        is ResultState.Loading -> {
+            item { LoadingScreen() }
+        }
+        is ResultState.Success -> {
+            items(topRatedMoviesResult.data) { item ->
+                NowPlayingMovieResultScreen(
+                    id = item.id,
+                    imageUrl = item.posterPath ?: "",
+                    title = item.title,
+                    overview = item.overview ?: "",
+                    navigateToDetail = navigateToDetail,
                 )
             }
-        },
-        modifier = modifier
-    )
+        }
+        is ResultState.Error -> {
+            item {
+                ErrorScreen(
+                    text = stringResource(R.string.movie_empty)
+                )
+            }
+        }
+        else -> {}
+    }
 }
 
 @Composable

@@ -11,6 +11,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,7 +29,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.R
-import com.example.movieappcompose.domain.entities.Genre
 import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.presentation.ViewModelFactory
 import com.example.movieappcompose.presentation.components.ContentSection
@@ -50,42 +50,146 @@ fun DetailPage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
-    val movieDetailResult = viewModel.movieDetailResult
+    when (val movieDetailResult = viewModel.movieDetailResult) {
+        is ResultState.Loading -> {
+            LoadingScreen()
+            viewModel.fetchMovieDetail(movieId)
+        }
+        is ResultState.Success -> {
+            DetailContent(
+                movie = movieDetailResult.data,
+                viewModel = viewModel,
+                navigateBack = navigateBack,
+                navigateToDetail = navigateAnotherDetail,
+                modifier = modifier
+            )
+        }
+        is ResultState.Error -> ErrorScreen(
+            text = stringResource(R.string.detail_empty)
+        )
+        else -> {}
+    }
+}
+
+@Composable
+fun DetailContent(
+    movie: Movie,
+    viewModel: DetailViewModel,
+    navigateBack: () -> Unit,
+    navigateToDetail: (Int) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val recommendationMoviesResult = viewModel.recommendationMoviesResult
+    val isAddedWatchlist = viewModel.isAddedToWatchlist
 
     Scaffold(
-        topBar = { DetailTopBar(navigateBack = navigateBack) },
+        topBar = {
+            DetailTopBar(
+                isAddedToWatchlist = isAddedWatchlist,
+                watchlistAction = {
+                    viewModel.changeWatchlist(movie)
+                    viewModel.getWatchlistStatus(movie.id)
+                },
+                navigateBack = navigateBack,
+            )
+        },
         modifier = modifier,
     ) { innerPadding ->
-        when (movieDetailResult) {
-            is ResultState.Loading -> {
-                LoadingScreen()
-                viewModel.fetchMovieDetail(movieId)
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+        ) {
+            AsyncImage(
+                model = BuildConfig.IMAGE_BASE_URL + movie.backdropPath,
+                contentDescription = movie.title,
+                alignment = Alignment.Center,
+                contentScale = ContentScale.FillBounds,
+                error = painterResource(id = R.drawable.ic_broken_image_white),
+                placeholder = painterResource(id = R.drawable.ic_image_white),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(225.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = movie.title,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                style = MaterialTheme.typography.h5,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            if (!movie.tagline.isNullOrBlank()) {
+                Text(
+                    text = movie.tagline,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 2,
+                    style = MaterialTheme.typography.body1.copy(
+                        color = Grey
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+                Spacer(modifier = Modifier.height(12.dp))
             }
-            is ResultState.Success -> {
-                val data = movieDetailResult.data
-
-                DetailContent(
-                    id = data.id,
-                    imageUrl = data.backdropPath ?: "",
-                    title = data.title,
-                    tagline = data.tagline,
-                    genres = data.genres,
-                    overview = data.overview ?: "",
-                    viewModel = viewModel,
-                    navigateToDetail = navigateAnotherDetail,
-                    modifier = Modifier.padding(innerPadding)
+            if (movie.genres != null) {
+                Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                    movie.genres.map { item ->
+                        GenreItem(
+                            name = item.name ?: "",
+                            modifier = Modifier.padding(horizontal = 2.dp)
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            ContentSection(title = stringResource(id = R.string.overview)) {
+                Text(
+                    text = movie.overview ?: "",
+                    overflow = TextOverflow.Clip,
+                    style = MaterialTheme.typography.body1.copy(
+                        color = Grey
+                    ),
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
-            is ResultState.Error -> ErrorScreen(
-                text = stringResource(R.string.detail_empty)
-            )
-            else -> {}
+            ContentSection(
+                title = stringResource(id = R.string.recommendation),
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                when (recommendationMoviesResult) {
+                    is ResultState.Loading -> {
+                        LoadingScreen()
+                        viewModel.fetchRecommendationMovies(movie.id)
+                    }
+                    is ResultState.Success -> {
+                        val data = recommendationMoviesResult.data
+
+                        if (data.isNotEmpty()) {
+                            RecommendationMovieContent(
+                                recommendationMovies = recommendationMoviesResult.data,
+                                navigateToDetail = navigateToDetail,
+                            )
+                        } else {
+                            ErrorScreen(
+                                text = stringResource(id = R.string.no_recommendation),
+                                modifier = Modifier
+                            )
+                        }
+                    }
+                    is ResultState.Error -> ErrorScreen()
+                    else -> {}
+                }
+            }
         }
     }
 }
 
 @Composable
 fun DetailTopBar(
+    isAddedToWatchlist: Boolean,
+    watchlistAction: () -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -111,121 +215,24 @@ fun DetailTopBar(
             )
         },
         actions = {
-            IconButton(
-                onClick = {},
-            ) {
+            IconButton(onClick = watchlistAction) {
                 Icon(
-                    imageVector = Icons.Default.BookmarkBorder,
-                    tint = MaterialTheme.colors.onSurface,
-                    contentDescription = stringResource(id = R.string.search_desc)
+                    imageVector = if (isAddedToWatchlist) {
+                        Icons.Default.Bookmark
+                    } else {
+                        Icons.Default.BookmarkBorder
+                    },
+                    tint = MaterialTheme.colors.primary,
+                    contentDescription = if (isAddedToWatchlist) {
+                        stringResource(id = R.string.remove_watchlist)
+                    } else {
+                        stringResource(id = R.string.add_watchlist)
+                    },
                 )
             }
         },
         modifier = modifier
     )
-}
-
-@Composable
-fun DetailContent(
-    id: Int,
-    imageUrl: String,
-    title: String,
-    tagline: String?,
-    genres: List<Genre>?,
-    overview: String,
-    viewModel: DetailViewModel,
-    navigateToDetail: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val recommendationMoviesResult = viewModel.recommendationMoviesResult
-
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        AsyncImage(
-            model = BuildConfig.IMAGE_BASE_URL + imageUrl,
-            contentDescription = title,
-            alignment = Alignment.Center,
-            contentScale = ContentScale.FillBounds,
-            error = painterResource(id = R.drawable.ic_broken_image_white),
-            placeholder = painterResource(id = R.drawable.ic_image_white),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(225.dp)
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            text = title,
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 2,
-            style = MaterialTheme.typography.h5,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        if (!tagline.isNullOrBlank()) {
-            Text(
-                text = tagline,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                style = MaterialTheme.typography.body1.copy(
-                    color = Grey
-                ),
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-            Spacer(modifier = Modifier.height(12.dp))
-        }
-        if (genres != null) {
-            Row(modifier = Modifier.padding(horizontal = 16.dp)) {
-                genres.map { item ->
-                    GenreItem(
-                        name = item.name ?: "",
-                        modifier = Modifier.padding(horizontal = 2.dp)
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        ContentSection(title = stringResource(id = R.string.overview)) {
-            Text(
-                text = overview,
-                overflow = TextOverflow.Clip,
-                style = MaterialTheme.typography.body1.copy(
-                    color = Grey
-                ),
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-        }
-        ContentSection(
-            title = stringResource(id = R.string.recommendation),
-            modifier = Modifier.padding(top = 16.dp)
-        ) {
-            when (recommendationMoviesResult) {
-                is ResultState.Loading -> {
-                    LoadingScreen()
-                    viewModel.fetchRecommendationMovies(id)
-                }
-                is ResultState.Success -> {
-                    val data = recommendationMoviesResult.data
-
-                    if (data.isNotEmpty()) {
-                        RecommendationMovieContent(
-                            recommendationMovies = recommendationMoviesResult.data,
-                            navigateToDetail = navigateToDetail,
-                        )
-                    } else {
-                        ErrorScreen(
-                            text = stringResource(id = R.string.no_recommendation),
-                            modifier = Modifier
-                        )
-                    }
-                }
-                is ResultState.Error -> ErrorScreen()
-                else -> {}
-            }
-        }
-    }
 }
 
 @Composable

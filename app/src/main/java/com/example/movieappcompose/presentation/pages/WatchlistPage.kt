@@ -4,12 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -31,10 +29,10 @@ fun WatchlistPage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
-    when (val watchlistResult = viewModel.watchlistMoviesResult) {
+    when (val watchlistMoviesResult = viewModel.watchlistMoviesResult) {
         is ResultState.Loading -> LoadingScreen()
         is ResultState.Success -> {
-            val data = watchlistResult.data
+            val data = watchlistMoviesResult.data
 
             if (data.isNotEmpty()) {
                 WatchlistContent(
@@ -53,23 +51,6 @@ fun WatchlistPage(
         )
         else -> {}
     }
-}
-
-@Composable
-fun WatchlistPageTopBar(modifier: Modifier = Modifier) {
-    TopAppBar(
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 0.dp,
-        title = {
-            Text(
-                text = stringResource(id = R.string.watchlist),
-                style = MaterialTheme.typography.h6.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-            )
-        },
-        modifier = modifier
-    )
 }
 
 @Composable

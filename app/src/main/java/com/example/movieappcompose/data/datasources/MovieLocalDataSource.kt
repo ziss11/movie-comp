@@ -1,9 +1,11 @@
 package com.example.movieappcompose.data.datasources
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.example.movieappcompose.Injection.provideMovieDao
 import com.example.movieappcompose.data.datasources.database.MovieDao
 import com.example.movieappcompose.data.models.MovieTable
+import com.example.movieappcompose.utilities.ResultState
 
 interface MovieLocalDataSource {
     suspend fun getWatchlistMovies(): List<MovieTable>

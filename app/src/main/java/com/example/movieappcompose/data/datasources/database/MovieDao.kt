@@ -11,12 +11,12 @@ interface MovieDao {
     @Query("SELECT * from movie")
     suspend fun getWatchlistMovies(): List<MovieTable>
 
-    @Query("SELECT EXISTS(SELECT* from movie WHERE id = :id)")
+    @Query("SELECT EXISTS(SELECT * from movie WHERE id=:id)")
     suspend fun isWatchlist(id: Int): Boolean
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addMovie(movie: MovieTable)
 
-    @Query("DELETE from movie WHERE id = :id")
+    @Query("DELETE from movie WHERE id=:id")
     suspend fun removeMovie(id: Int)
 }

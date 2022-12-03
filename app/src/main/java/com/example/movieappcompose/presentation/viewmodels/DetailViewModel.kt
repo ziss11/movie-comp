@@ -7,8 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.domain.entities.Movie
-import com.example.movieappcompose.domain.usecase.GetMovieDetail
-import com.example.movieappcompose.domain.usecase.GetRecommendedMovies
+import com.example.movieappcompose.domain.usecase.*
 import com.example.movieappcompose.utilities.ResultState
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -17,12 +16,18 @@ import java.io.IOException
 class DetailViewModel(
     private val getMovieDetail: GetMovieDetail,
     private val getRecommendedMovies: GetRecommendedMovies,
+    private val getWatchlistStatus: GetWatchlistStatus,
+    private val addWatchlistMovie: AddWatchlistMovie,
+    private val removeWatchlistMovie: RemoveWatchlistMovie,
 ) :
     ViewModel() {
     var movieDetailResult: ResultState<Movie> by mutableStateOf(ResultState.Loading)
         private set
 
     var recommendationMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
+        private set
+
+    var isAddedToWatchlist: Boolean by mutableStateOf(false)
         private set
 
     fun fetchMovieDetail(movieId: Int, apiKey: String = BuildConfig.API_KEY) {
@@ -39,7 +44,6 @@ class DetailViewModel(
         }
     }
 
-
     fun fetchRecommendationMovies(movieId: Int, apiKey: String = BuildConfig.API_KEY) {
         viewModelScope.launch {
             recommendationMoviesResult = try {
@@ -50,6 +54,22 @@ class DetailViewModel(
                 ResultState.Error
             } finally {
                 ResultState.Error
+            }
+        }
+    }
+
+    fun getWatchlistStatus(id: Int) {
+        viewModelScope.launch {
+            isAddedToWatchlist = getWatchlistStatus.execute(id)
+        }
+    }
+
+    fun changeWatchlist(movie: Movie) {
+        viewModelScope.launch {
+            if (isAddedToWatchlist) {
+                removeWatchlistMovie.execute(movie.id)
+            } else {
+                addWatchlistMovie.execute(movie)
             }
         }
     }

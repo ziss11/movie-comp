@@ -16,7 +16,6 @@
     <string name="my_name">Abdul Azis</string>
     <string name="my_email">abdul.azizz1108@gmail.com</string>
     <string name="movie_popularity">Movie Popularity</string>
-    <string name="remove_bookmark">Remove movie from bookmark</string>
     <string name="load_failed">Data Empty</string>
     <string name="reload">Reload</string>
     <string name="go_to_previous_page">Go to previous page</string>
@@ -30,4 +29,6 @@
     <string name="watchlist_empty">You don\'t have a watchlist movie yet</string>
     <string name="movie_empty">Movie data is empty :(</string>
     <string name="detail_empty">Ups. Data could not be loaded</string>
+    <string name="add_watchlist">Add movie to watchlist</string>
+    <string name="remove_watchlist">Remove movie from watchlist</string>
 </resources>
