@@ -23,9 +23,6 @@ class DetailViewModel(
     var movieDetailResult: ResultState<Movie> by mutableStateOf(ResultState.Loading)
         private set
 
-    var recommendationMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
-        private set
-
     fun fetchMovieDetail(movieId: Int, apiKey: String = BuildConfig.API_KEY) {
         viewModelScope.launch {
             movieDetailResult = try {
@@ -40,19 +37,8 @@ class DetailViewModel(
         }
     }
 
-    fun fetchRecommendationMovies(movieId: Int, apiKey: String = BuildConfig.API_KEY) {
-        viewModelScope.launch {
-            recommendationMoviesResult = try {
-                ResultState.Success(getRecommendedMovies.execute(movieId, apiKey))
-            } catch (e: IOException) {
-                ResultState.Error
-            } catch (e: HttpException) {
-                ResultState.Error
-            } finally {
-                ResultState.Error
-            }
-        }
-    }
+    fun fetchRecommendationMovies(movieId: Int, apiKey: String = BuildConfig.API_KEY) =
+        getRecommendedMovies.execute(movieId, apiKey)
 
     fun getWatchlistStatus(id: Int) = getWatchlistStatus.execute(id)
 

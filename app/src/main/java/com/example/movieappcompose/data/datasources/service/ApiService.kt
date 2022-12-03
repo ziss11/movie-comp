@@ -19,10 +19,10 @@ interface ApiService {
     ): Call<MovieResponse>
 
     @GET("movie/{movie_id}/recommendations")
-    suspend fun getRecommendedMoviesById(
+    fun getRecommendedMoviesById(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String,
-    ): MovieResponse
+    ): Call<MovieResponse>
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(

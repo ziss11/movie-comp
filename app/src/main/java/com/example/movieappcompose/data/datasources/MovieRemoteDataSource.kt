@@ -9,7 +9,7 @@ import retrofit2.Call
 interface MovieRemoteDataSource {
     fun getTopRatedMovies(apiKey: String): Call<MovieResponse>
     fun getNowPlayingMovies(apiKey: String): Call<MovieResponse>
-    suspend fun getRecommendedMoviesById(movieId: Int, apiKey: String): List<MovieModel>
+    fun getRecommendedMoviesById(movieId: Int, apiKey: String): Call<MovieResponse>
     suspend fun getMovieDetail(movieId: Int, apiKey: String): MovieModel
     suspend fun searchMovie(apiKey: String, query: String): List<MovieModel>
 }
@@ -22,10 +22,10 @@ class MovieRemoteDataSourceImpl private constructor(private val apiService: ApiS
     override fun getNowPlayingMovies(apiKey: String) =
         apiService.getNowPlayingMovies(apiKey)
 
-    override suspend fun getRecommendedMoviesById(
+    override fun getRecommendedMoviesById(
         movieId: Int,
         apiKey: String
-    ) = apiService.getRecommendedMoviesById(movieId, apiKey).results ?: listOf()
+    ) = apiService.getRecommendedMoviesById(movieId, apiKey)
 
     override suspend fun getMovieDetail(movieId: Int, apiKey: String) =
         apiService.getMovieDetail(movieId, apiKey)

@@ -25,6 +25,7 @@ class MovieRepositoryImpl private constructor(
 ) : MovieRepository {
     private val nowPlayingRatedResult = MediatorLiveData<ResultState<List<Movie>>>()
     private val topRatedResult = MediatorLiveData<ResultState<List<Movie>>>()
+    private val recommendedResult = MediatorLiveData<ResultState<List<Movie>>>()
 
     override fun getTopRatedMovies(apiKey: String): LiveData<ResultState<List<Movie>>> {
         val client = remoteDataSource.getTopRatedMovies(apiKey)
@@ -74,9 +75,32 @@ class MovieRepositoryImpl private constructor(
         return nowPlayingRatedResult
     }
 
-    override suspend fun getRecommendedMoviesById(
-        movieId: Int, apiKey: String
-    ) = remoteDataSource.getRecommendedMoviesById(movieId, apiKey).map { it.toEntity() }
+    override fun getRecommendedMoviesById(
+        movieId: Int,
+        apiKey: String
+    ): LiveData<ResultState<List<Movie>>> {
+        val client = remoteDataSource.getNowPlayingMovies(apiKey)
+        client.enqueue(object : Callback<MovieResponse> {
+            override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
+                val responseBody = response.body()
+
+                if (response.isSuccessful && responseBody != null) {
+                    recommendedResult.value =
+                        ResultState.Success(responseBody.results?.map { it.toEntity() } ?: listOf())
+                } else {
+                    Log.d(TAG, response.message().toString())
+                    recommendedResult.value = ResultState.Error
+                }
+            }
+
+            override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                Log.d(TAG, t.message.toString())
+                recommendedResult.value = ResultState.Error
+            }
+        })
+
+        return recommendedResult
+    }
 
     override suspend fun getMovieDetail(movieId: Int, apiKey: String) =
         remoteDataSource.getMovieDetail(movieId, apiKey).toEntity()

@@ -82,7 +82,8 @@ fun DetailContent(
 ) {
     viewModel.getWatchlistStatus(movie.id)
     val isAddedToWatchlist by viewModel.getWatchlistStatus(movie.id).observeAsState(false)
-    val recommendationMoviesResult = viewModel.recommendationMoviesResult
+    val recommendationMoviesResult by viewModel.fetchRecommendationMovies(movie.id)
+        .observeAsState(initial = ResultState.Loading)
 
     Scaffold(
         topBar = {
@@ -190,11 +191,12 @@ fun DetailContent(
                         viewModel.fetchRecommendationMovies(movie.id)
                     }
                     is ResultState.Success -> {
-                        val data = recommendationMoviesResult.data
+                        val data =
+                            (recommendationMoviesResult as ResultState.Success<List<Movie>>).data
 
                         if (data.isNotEmpty()) {
                             RecommendationMovieContent(
-                                recommendationMovies = recommendationMoviesResult.data,
+                                recommendationMovies = data,
                                 navigateToDetail = navigateToDetail,
                             )
                         } else {
