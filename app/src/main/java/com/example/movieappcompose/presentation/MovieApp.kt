@@ -24,7 +24,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.movieappcompose.R
 import com.example.movieappcompose.presentation.components.BasicTopBar
-import com.example.movieappcompose.presentation.navigation.NavigationItem
+import com.example.movieappcompose.utilities.NavigationItem
 import com.example.movieappcompose.utilities.Screen
 import com.example.movieappcompose.presentation.pages.*
 import com.example.movieappcompose.presentation.theme.Grey

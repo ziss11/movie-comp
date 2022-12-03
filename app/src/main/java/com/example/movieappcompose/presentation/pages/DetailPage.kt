@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.runtime.*
@@ -22,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,10 +30,7 @@ import com.example.movieappcompose.BuildConfig
 import com.example.movieappcompose.R
 import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.presentation.ViewModelFactory
-import com.example.movieappcompose.presentation.components.ContentSection
-import com.example.movieappcompose.presentation.components.ErrorScreen
-import com.example.movieappcompose.presentation.components.LoadingScreen
-import com.example.movieappcompose.presentation.components.MovieCard
+import com.example.movieappcompose.presentation.components.*
 import com.example.movieappcompose.presentation.theme.Grey
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.presentation.viewmodels.DetailViewModel
@@ -73,7 +68,6 @@ fun DetailPage(
         is ResultState.Error -> ErrorScreen(
             text = stringResource(R.string.detail_empty)
         )
-        else -> {}
     }
 }
 
@@ -92,7 +86,8 @@ fun DetailContent(
 
     Scaffold(
         topBar = {
-            DetailTopBar(
+            BasicTopBar(
+                title = stringResource(id = R.string.detail_top_bar_title),
                 navigateBack = navigateBack,
             )
         },
@@ -212,41 +207,10 @@ fun DetailContent(
                         }
                     }
                     is ResultState.Error -> ErrorScreen()
-                    else -> {}
                 }
             }
         }
     }
-}
-
-@Composable
-fun DetailTopBar(
-    navigateBack: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    TopAppBar(
-        backgroundColor = MaterialTheme.colors.background,
-        elevation = 0.dp,
-        navigationIcon = {
-            IconButton(
-                onClick = navigateBack,
-            ) {
-                Icon(
-                    Icons.Default.ArrowBackIosNew,
-                    contentDescription = stringResource(id = R.string.go_to_previous_page)
-                )
-            }
-        },
-        title = {
-            Text(
-                text = stringResource(id = R.string.detail_top_bar_title),
-                style = MaterialTheme.typography.h6.copy(
-                    fontWeight = FontWeight.Medium,
-                ),
-            )
-        },
-        modifier = modifier
-    )
 }
 
 @Composable

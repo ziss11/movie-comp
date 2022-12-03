@@ -54,7 +54,6 @@ fun WatchlistPage(
         is ResultState.Error -> ErrorScreen(
             text = stringResource(R.string.watchlist_empty)
         )
-        else -> {}
     }
 }
 

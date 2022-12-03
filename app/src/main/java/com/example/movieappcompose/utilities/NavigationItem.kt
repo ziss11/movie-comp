@@ -1,7 +1,6 @@
-package com.example.movieappcompose.presentation.navigation
+package com.example.movieappcompose.utilities
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.movieappcompose.utilities.Screen
 
 data class NavigationItem(
     val title: String,

@@ -123,7 +123,6 @@ fun LazyListScope.initialMoviesScreen(
                     text = stringResource(R.string.movie_empty),
                     modifier = Modifier.height(200.dp)
                 )
-                else -> {}
             }
         }
     }
@@ -153,7 +152,6 @@ fun LazyListScope.initialMoviesScreen(
                 )
             }
         }
-        else -> {}
     }
 }
 
