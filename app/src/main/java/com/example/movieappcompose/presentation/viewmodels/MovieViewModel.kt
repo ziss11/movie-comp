@@ -15,24 +15,16 @@ import com.example.movieappcompose.utilities.ResultState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import java.io.IOException
 
 class MovieViewModel(
     private val getTopRatedMovies: GetTopRatedMovies,
     private val getNowPlayingMovies: GetNowPlayingMovies,
     private val searchMovie: SearchMovie,
 ) : ViewModel() {
-    var nowPlayingMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
-        private set
-
     var searchMovieResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Initial)
 
     private val _query = mutableStateOf("")
     val query: State<String> get() = _query
-
-    init {
-        fetchNowPlayingMovies()
-    }
 
     fun searchMovies(newQuery: String, apiKey: String = BuildConfig.API_KEY) {
         viewModelScope.launch {
@@ -51,17 +43,6 @@ class MovieViewModel(
     fun fetchTopRatedMovies(apiKey: String = BuildConfig.API_KEY) =
         getTopRatedMovies.execute(apiKey)
 
-    private fun fetchNowPlayingMovies(apiKey: String = BuildConfig.API_KEY) {
-        viewModelScope.launch {
-            nowPlayingMoviesResult = try {
-                ResultState.Success(getNowPlayingMovies.execute(apiKey))
-            } catch (e: IOException) {
-                ResultState.Error
-            } catch (e: HttpException) {
-                ResultState.Error
-            } finally {
-                ResultState.Error
-            }
-        }
-    }
+    fun fetchNowPlayingMovies(apiKey: String = BuildConfig.API_KEY) =
+        getNowPlayingMovies.execute(apiKey)
 }

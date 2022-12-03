@@ -33,7 +33,8 @@ fun MoviePage(
 ) {
     val topRatedMoviesResult by viewModel.fetchTopRatedMovies()
         .observeAsState(initial = ResultState.Loading)
-    val nowPlayingMoviesResult = viewModel.nowPlayingMoviesResult
+    val nowPlayingMoviesResult by viewModel.fetchNowPlayingMovies()
+        .observeAsState(initial = ResultState.Loading)
     val searchMoviesResult = viewModel.searchMovieResult
 
     val query by viewModel.query

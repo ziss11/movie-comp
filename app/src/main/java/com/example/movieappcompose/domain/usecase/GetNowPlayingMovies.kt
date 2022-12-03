@@ -5,7 +5,7 @@ import com.example.movieappcompose.Injection.provideMovieRepository
 import com.example.movieappcompose.domain.repositories.MovieRepository
 
 class GetNowPlayingMovies private constructor(private val repository: MovieRepository) {
-    suspend fun execute(apiKey: String) = repository.getNowPlayingMovies(apiKey);
+    fun execute(apiKey: String) = repository.getNowPlayingMovies(apiKey)
 
     companion object {
         private var instance: GetNowPlayingMovies? = null
