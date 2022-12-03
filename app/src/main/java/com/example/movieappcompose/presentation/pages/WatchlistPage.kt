@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -30,13 +32,13 @@ fun WatchlistPage(
     )
 ) {
     viewModel.fetchWatchlistMovies()
+    val watchlistMoviesResult by viewModel.fetchWatchlistMovies()
+        .observeAsState(initial = ResultState.Loading)
 
-    when (val watchlistMoviesResult = viewModel.watchlistMoviesResult) {
-        is ResultState.Loading -> {
-            LoadingScreen()
-        }
-        is ResultState.Success -> {
-            val data = watchlistMoviesResult.data
+    when (watchlistMoviesResult) {
+        is ResultState.Loading -> LoadingScreen()
+        is ResultState.Success<List<Movie>> -> {
+            val data = (watchlistMoviesResult as ResultState.Success<List<Movie>>).data
 
             if (data.isNotEmpty()) {
                 WatchlistContent(

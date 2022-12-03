@@ -5,7 +5,7 @@ import com.example.movieappcompose.Injection
 import com.example.movieappcompose.domain.repositories.MovieRepository
 
 class GetWatchlistMovies private constructor(private val repository: MovieRepository) {
-    suspend fun execute() = repository.getWatchlistMovies()
+    fun execute() = repository.getWatchlistMovies()
 
     companion object {
         private var instance: GetWatchlistMovies? = null

@@ -3,6 +3,7 @@ package com.example.movieappcompose.data.repositories
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import androidx.lifecycle.map
 import com.example.movieappcompose.Injection.provideMovieLocalDataSource
 import com.example.movieappcompose.Injection.provideMovieRemoteDataSource
 import com.example.movieappcompose.data.datasources.MovieLocalDataSource
@@ -10,6 +11,11 @@ import com.example.movieappcompose.data.datasources.MovieRemoteDataSource
 import com.example.movieappcompose.data.models.MovieTable
 import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.domain.repositories.MovieRepository
+import com.example.movieappcompose.utilities.ResultState
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class MovieRepositoryImpl private constructor(
     private val remoteDataSource: MovieRemoteDataSource,
@@ -34,11 +40,19 @@ class MovieRepositoryImpl private constructor(
         query: String
     ) = remoteDataSource.searchMovie(apiKey, query).map { it.toEntity() }
 
-    override suspend fun getWatchlistMovies(): List<Movie> {
-        return localDataSource.getWatchlistMovies().map { it.toEntity() }
+    override fun getWatchlistMovies() = liveData {
+        try {
+            val response = localDataSource.getWatchlistMovies()
+            val movieList: LiveData<ResultState<List<Movie>>> = response.map { list ->
+                ResultState.Success(list.map { it.toEntity() })
+            }
+            emitSource(movieList)
+        } catch (e: Exception) {
+            emit(ResultState.Error)
+        }
     }
 
-    override fun isWatchlist(id: Int): LiveData<Boolean> = liveData {
+    override fun isWatchlist(id: Int) = liveData {
         emitSource(localDataSource.isWatchlist(id))
     }
 

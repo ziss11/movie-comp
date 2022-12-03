@@ -15,11 +15,9 @@ interface MovieLocalDataSource {
 
 class MovieLocalDataSourceImpl private constructor(private val movieDao: MovieDao) :
     MovieLocalDataSource {
-    override fun getWatchlistMovies(): LiveData<List<MovieTable>> {
-        return movieDao.getWatchlistMovies()
-    }
+    override fun getWatchlistMovies() = movieDao.getWatchlistMovies()
 
-    override fun isWatchlist(id: Int): LiveData<Boolean> = movieDao.isWatchlist(id)
+    override fun isWatchlist(id: Int) = movieDao.isWatchlist(id)
 
     override suspend fun addWatchlistMovie(movie: MovieTable) {
         movieDao.addMovie(movie)

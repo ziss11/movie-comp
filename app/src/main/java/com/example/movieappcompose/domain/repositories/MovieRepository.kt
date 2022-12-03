@@ -2,6 +2,7 @@ package com.example.movieappcompose.domain.repositories
 
 import androidx.lifecycle.LiveData
 import com.example.movieappcompose.domain.entities.Movie
+import com.example.movieappcompose.utilities.ResultState
 
 interface MovieRepository {
     // remote
@@ -12,7 +13,7 @@ interface MovieRepository {
     suspend fun searchMovie(apiKey: String, query: String): List<Movie>
 
     // local
-    suspend fun getWatchlistMovies(): List<Movie>
+    fun getWatchlistMovies(): LiveData<ResultState<List<Movie>>>
     fun isWatchlist(id: Int): LiveData<Boolean>
     suspend fun addWatchlistMovie(movie: Movie)
     suspend fun removeWatchlistMovie(id: Int)
