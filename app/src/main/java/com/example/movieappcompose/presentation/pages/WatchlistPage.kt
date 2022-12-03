@@ -29,6 +29,8 @@ fun WatchlistPage(
         factory = ViewModelFactory.getInstance(LocalContext.current)
     )
 ) {
+    viewModel.fetchWatchlistMovies()
+
     when (val watchlistMoviesResult = viewModel.watchlistMoviesResult) {
         is ResultState.Loading -> LoadingScreen()
         is ResultState.Success -> {

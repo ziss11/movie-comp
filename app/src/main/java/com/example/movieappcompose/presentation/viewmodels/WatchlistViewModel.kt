@@ -16,11 +16,7 @@ class WatchlistViewModel(
     var watchlistMoviesResult: ResultState<List<Movie>> by mutableStateOf(ResultState.Loading)
         private set
 
-    init {
-        fetchWatchlistMovies()
-    }
-
-    private fun fetchWatchlistMovies() {
+    fun fetchWatchlistMovies() {
         viewModelScope.launch {
             watchlistMoviesResult = try {
                 ResultState.Success(getWatchlistMovies.execute())

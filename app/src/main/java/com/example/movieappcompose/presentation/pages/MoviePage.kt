@@ -56,10 +56,21 @@ fun MoviePage(
         when (searchMoviesResult) {
             is ResultState.Loading -> item { LoadingScreen() }
             is ResultState.Success -> {
-                searchedMoviesScreen(
-                    searchedMovies = searchMoviesResult.data,
-                    navigateToDetail = navigateToDetail,
-                )
+                val data = searchMoviesResult.data
+
+                if (data.isNotEmpty()) {
+                    searchedMoviesScreen(
+                        searchedMovies = data,
+                        navigateToDetail = navigateToDetail,
+                    )
+                } else {
+                    item {
+                        ErrorScreen(
+                            text = stringResource(id = R.string.search_empty),
+                            modifier = Modifier.height(500.dp)
+                        )
+                    }
+                }
             }
             else -> {
                 initialMoviesScreen(
@@ -105,7 +116,8 @@ fun LazyListScope.initialMoviesScreen(
                     navigateToDetail = navigateToDetail,
                 )
                 is ResultState.Error -> ErrorScreen(
-                    text = stringResource(R.string.movie_empty)
+                    text = stringResource(R.string.movie_empty),
+                    modifier = Modifier.height(200.dp)
                 )
                 else -> {}
             }
@@ -132,7 +144,8 @@ fun LazyListScope.initialMoviesScreen(
         is ResultState.Error -> {
             item {
                 ErrorScreen(
-                    text = stringResource(R.string.movie_empty)
+                    text = stringResource(R.string.movie_empty),
+                    modifier = Modifier.height(200.dp)
                 )
             }
         }

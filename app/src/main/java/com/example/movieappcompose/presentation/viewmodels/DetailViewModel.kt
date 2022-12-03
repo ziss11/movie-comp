@@ -19,8 +19,7 @@ class DetailViewModel(
     private val getWatchlistStatus: GetWatchlistStatus,
     private val addWatchlistMovie: AddWatchlistMovie,
     private val removeWatchlistMovie: RemoveWatchlistMovie,
-) :
-    ViewModel() {
+) : ViewModel() {
     var movieDetailResult: ResultState<Movie> by mutableStateOf(ResultState.Loading)
         private set
 

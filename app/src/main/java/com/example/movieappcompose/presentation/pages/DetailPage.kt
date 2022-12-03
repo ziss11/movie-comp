@@ -105,7 +105,7 @@ fun DetailContent(
                 model = BuildConfig.IMAGE_BASE_URL + movie.backdropPath,
                 contentDescription = movie.title,
                 alignment = Alignment.Center,
-                contentScale = ContentScale.FillBounds,
+                contentScale = ContentScale.Fit,
                 error = painterResource(id = R.drawable.ic_broken_image_white),
                 placeholder = painterResource(id = R.drawable.ic_image_white),
                 modifier = Modifier
@@ -174,7 +174,7 @@ fun DetailContent(
                         } else {
                             ErrorScreen(
                                 text = stringResource(id = R.string.no_recommendation),
-                                modifier = Modifier
+                                modifier = Modifier.height(200.dp)
                             )
                         }
                     }
