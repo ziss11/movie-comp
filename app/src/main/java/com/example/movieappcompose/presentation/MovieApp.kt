@@ -105,7 +105,8 @@ fun MovieApp(
 
 @Composable
 fun BottomBar(
-    navController: NavHostController, modifier: Modifier = Modifier
+    navController: NavHostController,
+    modifier: Modifier = Modifier
 ) {
     val navigationItems = listOf(
         NavigationItem(
@@ -147,6 +148,7 @@ fun RowScope.BottomBarItem(
     icon: ImageVector,
     route: String,
     navController: NavHostController,
+    modifier: Modifier = Modifier,
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -172,6 +174,7 @@ fun RowScope.BottomBarItem(
                 launchSingleTop = true
             }
         },
+        modifier = modifier,
     )
 }
 
