@@ -5,24 +5,21 @@ import androidx.lifecycle.LiveData
 import com.example.movieappcompose.Injection.provideMovieDao
 import com.example.movieappcompose.data.datasources.database.MovieDao
 import com.example.movieappcompose.data.models.MovieTable
-import com.example.movieappcompose.utilities.ResultState
 
 interface MovieLocalDataSource {
-    suspend fun getWatchlistMovies(): List<MovieTable>
-    suspend fun isWatchlist(id: Int): Boolean
+    fun getWatchlistMovies(): LiveData<List<MovieTable>>
+    fun isWatchlist(id: Int): LiveData<Boolean>
     suspend fun addWatchlistMovie(movie: MovieTable)
     suspend fun removeWatchlistMovie(id: Int)
 }
 
 class MovieLocalDataSourceImpl private constructor(private val movieDao: MovieDao) :
     MovieLocalDataSource {
-    override suspend fun getWatchlistMovies(): List<MovieTable> {
+    override fun getWatchlistMovies(): LiveData<List<MovieTable>> {
         return movieDao.getWatchlistMovies()
     }
 
-    override suspend fun isWatchlist(id: Int): Boolean {
-        return movieDao.isWatchlist(id)
-    }
+    override fun isWatchlist(id: Int): LiveData<Boolean> = movieDao.isWatchlist(id)
 
     override suspend fun addWatchlistMovie(movie: MovieTable) {
         movieDao.addMovie(movie)

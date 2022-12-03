@@ -13,7 +13,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.BookmarkBorder
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -79,17 +80,13 @@ fun DetailContent(
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    viewModel.getWatchlistStatus(movie.id)
+    val isAddedToWatchlist by viewModel.getWatchlistStatus(movie.id).observeAsState(false)
     val recommendationMoviesResult = viewModel.recommendationMoviesResult
-    val isAddedWatchlist = viewModel.isAddedToWatchlist
 
     Scaffold(
         topBar = {
             DetailTopBar(
-                isAddedToWatchlist = isAddedWatchlist,
-                watchlistAction = {
-                    viewModel.changeWatchlist(movie)
-                    viewModel.getWatchlistStatus(movie.id)
-                },
                 navigateBack = navigateBack,
             )
         },
@@ -113,25 +110,54 @@ fun DetailContent(
                     .height(225.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = movie.title,
-                overflow = TextOverflow.Ellipsis,
-                maxLines = 2,
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-            Spacer(modifier = Modifier.height(5.dp))
-            if (!movie.tagline.isNullOrBlank()) {
-                Text(
-                    text = movie.tagline,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    style = MaterialTheme.typography.body1.copy(
-                        color = Grey
-                    ),
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
-                Spacer(modifier = Modifier.height(12.dp))
+            Row(modifier = Modifier.padding(horizontal = 16.dp)) {
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 8.dp),
+                ) {
+                    Text(
+                        text = movie.title,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        style = MaterialTheme.typography.h5,
+
+                        )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    if (!movie.tagline.isNullOrBlank()) {
+                        Text(
+                            text = movie.tagline,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 2,
+                            style = MaterialTheme.typography.body1.copy(
+                                color = Grey
+                            ),
+                        )
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+                }
+                IconButton(
+                    onClick = {
+                        if (isAddedToWatchlist) {
+                            viewModel.removeMovieFromWatchlist(movie.id)
+                        } else {
+                            viewModel.addMovieToWatchlist(movie)
+                        }
+                    },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(100))
+                        .background(MaterialTheme.colors.surface)
+                ) {
+                    Icon(
+                        imageVector = if (isAddedToWatchlist) {
+                            Icons.Default.Bookmark
+                        } else {
+                            Icons.Default.BookmarkBorder
+                        },
+                        tint = MaterialTheme.colors.primary,
+                        contentDescription = stringResource(id = R.string.watchlist_action),
+                    )
+                }
             }
             if (movie.genres != null) {
                 Row(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -188,8 +214,6 @@ fun DetailContent(
 
 @Composable
 fun DetailTopBar(
-    isAddedToWatchlist: Boolean,
-    watchlistAction: () -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -213,23 +237,6 @@ fun DetailTopBar(
                     fontWeight = FontWeight.Medium,
                 ),
             )
-        },
-        actions = {
-            IconButton(onClick = watchlistAction) {
-                Icon(
-                    imageVector = if (isAddedToWatchlist) {
-                        Icons.Default.Bookmark
-                    } else {
-                        Icons.Default.BookmarkBorder
-                    },
-                    tint = MaterialTheme.colors.primary,
-                    contentDescription = if (isAddedToWatchlist) {
-                        stringResource(id = R.string.remove_watchlist)
-                    } else {
-                        stringResource(id = R.string.add_watchlist)
-                    },
-                )
-            }
         },
         modifier = modifier
     )

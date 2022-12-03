@@ -1,6 +1,8 @@
 package com.example.movieappcompose.data.repositories
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.liveData
 import com.example.movieappcompose.Injection.provideMovieLocalDataSource
 import com.example.movieappcompose.Injection.provideMovieRemoteDataSource
 import com.example.movieappcompose.data.datasources.MovieLocalDataSource
@@ -36,8 +38,8 @@ class MovieRepositoryImpl private constructor(
         return localDataSource.getWatchlistMovies().map { it.toEntity() }
     }
 
-    override suspend fun isWatchlist(id: Int): Boolean {
-        return localDataSource.isWatchlist(id)
+    override fun isWatchlist(id: Int): LiveData<Boolean> = liveData {
+        emitSource(localDataSource.isWatchlist(id))
     }
 
     override suspend fun addWatchlistMovie(movie: Movie) {

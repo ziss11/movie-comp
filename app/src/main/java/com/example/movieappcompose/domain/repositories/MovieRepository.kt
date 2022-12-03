@@ -1,6 +1,6 @@
 package com.example.movieappcompose.domain.repositories
 
-import com.example.movieappcompose.data.models.MovieTable
+import androidx.lifecycle.LiveData
 import com.example.movieappcompose.domain.entities.Movie
 
 interface MovieRepository {
@@ -13,7 +13,7 @@ interface MovieRepository {
 
     // local
     suspend fun getWatchlistMovies(): List<Movie>
-    suspend fun isWatchlist(id: Int): Boolean
+    fun isWatchlist(id: Int): LiveData<Boolean>
     suspend fun addWatchlistMovie(movie: Movie)
     suspend fun removeWatchlistMovie(id: Int)
 }

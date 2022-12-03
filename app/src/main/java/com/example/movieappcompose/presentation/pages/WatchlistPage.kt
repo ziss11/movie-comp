@@ -32,7 +32,9 @@ fun WatchlistPage(
     viewModel.fetchWatchlistMovies()
 
     when (val watchlistMoviesResult = viewModel.watchlistMoviesResult) {
-        is ResultState.Loading -> LoadingScreen()
+        is ResultState.Loading -> {
+            LoadingScreen()
+        }
         is ResultState.Success -> {
             val data = watchlistMoviesResult.data
 
