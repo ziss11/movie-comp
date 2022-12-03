@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +33,7 @@ fun SearchPage(
     navigateBack: () -> Unit,
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = viewModel(factory = ViewModelFactory.getInstance())
+    viewModel: SearchViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     val query by viewModel.query
     val searchMoviesResult = viewModel.searchMovieResult
@@ -170,9 +171,9 @@ fun SearchedMoviesContent(
     ) {
         items(searchedMovies) { item ->
             MovieTile(
-                imageUrl = item.posterPath,
-                title = item.title,
-                subtitle = item.overview,
+                imageUrl = item.posterPath ?: "",
+                title = item.title ?: "",
+                subtitle = item.overview ?: "",
                 onClick = { navigateToDetail(item.id) },
                 modifier = modifier.padding(horizontal = 16.dp),
             )

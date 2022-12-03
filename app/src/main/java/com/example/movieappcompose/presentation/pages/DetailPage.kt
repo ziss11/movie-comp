@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,7 +46,7 @@ fun DetailPage(
     navigateBack: () -> Unit,
     navigateAnotherDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: DetailViewModel = viewModel(factory = ViewModelFactory.getInstance())
+    viewModel: DetailViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     val movieDetailResult = viewModel.movieDetailResult
 
@@ -62,11 +63,11 @@ fun DetailPage(
                 val data = movieDetailResult.data
                 DetailContent(
                     id = data.id,
-                    imageUrl = data.backdropPath,
-                    title = data.title,
+                    imageUrl = data.backdropPath ?: "",
+                    title = data.title ?: "",
                     tagline = data.tagline,
-                    genres = data.genres ,
-                    overview = data.overview,
+                    genres = data.genres,
+                    overview = data.overview ?: "",
                     viewModel = viewModel,
                     navigateToDetail = navigateAnotherDetail,
                     modifier = Modifier.padding(innerPadding)
@@ -256,8 +257,8 @@ fun RecommendationMovieContent(
     ) {
         items(recommendationMovies) { item ->
             MovieCard(
-                imageUrl = item.posterPath,
-                contentDescription = item.title,
+                imageUrl = item.posterPath ?: "",
+                contentDescription = item.title ?: "",
                 onClick = { navigateToDetail(item.id) },
             )
         }

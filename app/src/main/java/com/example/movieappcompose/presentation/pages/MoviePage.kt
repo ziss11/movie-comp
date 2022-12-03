@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +28,7 @@ import com.example.movieappcompose.utilities.ResultState
 fun MoviePage(
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance())
+    viewModel: MovieViewModel = viewModel(factory = ViewModelFactory.getInstance(LocalContext.current))
 ) {
     val nowPlayingMoviesResult = viewModel.nowPlayingMoviesResult
     val topRatedMoviesResult = viewModel.topRatedMoviesResult
@@ -64,9 +65,9 @@ fun MoviePage(
                 items(topRatedMoviesResult.data) { item ->
                     NowPlayingMovieResultScreen(
                         id = item.id,
-                        imageUrl = item.posterPath,
-                        title = item.title,
-                        overview = item.overview,
+                        imageUrl = item.posterPath ?: "",
+                        title = item.title ?: "",
+                        overview = item.overview ?: "",
                         navigateToDetail = navigateToDetail,
                     )
                 }
@@ -123,8 +124,8 @@ fun PopularMovieResultScreen(
     ) {
         items(popularMovies) { item ->
             MovieCard(
-                imageUrl = item.posterPath,
-                contentDescription = item.title,
+                imageUrl = item.posterPath ?: "",
+                contentDescription = item.title ?: "",
                 onClick = { navigateToDetail(item.id) },
             )
         }
