@@ -1,9 +1,6 @@
 package com.example.movieappcompose.presentation.viewmodels
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieappcompose.BuildConfig
@@ -28,12 +25,8 @@ class SearchViewModel(private val searchMovie: SearchMovie) : ViewModel() {
             _query.value = newQuery
             searchMovieResult = try {
                 ResultState.Success(searchMovie.execute(apiKey, _query.value))
-            } catch (e: IOException) {
-                ResultState.Error(e.toString())
             } catch (e: HttpException) {
-                ResultState.Error(e.toString())
-            } finally {
-                ResultState.Error("Data Empty")
+                ResultState.Initial
             }
         }
     }

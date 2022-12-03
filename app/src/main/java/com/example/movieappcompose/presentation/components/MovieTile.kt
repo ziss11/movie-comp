@@ -29,11 +29,14 @@ fun MovieTile(
 ) {
     Box(
         contentAlignment = Alignment.BottomStart,
-        modifier = modifier.clickable { onClick() },
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable { onClick() },
     ) {
         Card(
             elevation = 4.dp,
             shape = RoundedCornerShape(4.dp),
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier.padding(

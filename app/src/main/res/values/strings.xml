@@ -25,5 +25,6 @@
     <string name="no_recommendation">No Recommendations</string>
     <string name="query_search_placeholder">Type to search…</string>
     <string name="search_empty">Movie not found</string>
+    <string name="clear_query">Clear query</string>
 
 </resources>

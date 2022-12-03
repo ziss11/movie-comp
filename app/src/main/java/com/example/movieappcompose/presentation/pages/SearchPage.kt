@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -44,6 +45,9 @@ fun SearchPage(
                 onQueryChange = { newQuery ->
                     viewModel.searchMovies(newQuery = newQuery)
                 },
+                onClearQuery = {
+                    viewModel.searchMovies(newQuery = "")
+                },
                 navigateBack = navigateBack
             )
         },
@@ -53,14 +57,18 @@ fun SearchPage(
             is ResultState.Initial -> {}
             is ResultState.Loading -> LoadingScreen()
             is ResultState.Success -> {
-                SearchedMoviesContent(
-                    searchedMovies = searchMoviesResult.data,
-                    navigateToDetail = navigateToDetail
-                )
+                val data = searchMoviesResult.data
+
+                if (data.isNotEmpty()) {
+                    SearchedMoviesContent(
+                        searchedMovies = searchMoviesResult.data,
+                        navigateToDetail = navigateToDetail
+                    )
+                } else {
+                    ErrorScreen(text = stringResource(R.string.search_empty))
+                }
             }
-            is ResultState.Error -> ErrorScreen(
-                text = stringResource(id = R.string.search_empty)
-            )
+            is ResultState.Error -> {}
         }
     }
 }
@@ -69,6 +77,7 @@ fun SearchPage(
 fun SearchTopBar(
     query: String,
     onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit,
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -89,9 +98,8 @@ fun SearchTopBar(
             SearchBar(
                 query = query,
                 onQueryChange = onQueryChange,
-                modifier = Modifier.padding(
-                    end = 16.dp,
-                )
+                onClearQuery = onClearQuery,
+                modifier = Modifier.padding(end = 16.dp)
             )
         },
         modifier = modifier
@@ -102,6 +110,7 @@ fun SearchTopBar(
 fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TextField(
@@ -110,10 +119,21 @@ fun SearchBar(
         value = query,
         onValueChange = onQueryChange,
         trailingIcon = {
-            Icon(
-                Icons.Rounded.Search,
-                contentDescription = stringResource(id = R.string.search_desc)
-            )
+            if (query.isEmpty()) {
+                Icon(
+                    Icons.Rounded.Search,
+                    contentDescription = stringResource(id = R.string.search_desc)
+                )
+            } else {
+                IconButton(
+                    onClick = onClearQuery,
+                ) {
+                    Icon(
+                        Icons.Rounded.Clear,
+                        contentDescription = stringResource(id = R.string.clear_query)
+                    )
+                }
+            }
         },
         colors = TextFieldDefaults.textFieldColors(
             backgroundColor = MaterialTheme.colors.background,
