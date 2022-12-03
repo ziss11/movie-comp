@@ -49,12 +49,12 @@ fun AboutPage(modifier: Modifier = Modifier) {
 @Composable
 fun AboutPageTopBar(modifier: Modifier = Modifier) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.surface,
+        backgroundColor = MaterialTheme.colors.background,
         elevation = 0.dp,
         title = {
             Text(
                 text = stringResource(id = R.string.about_top_bar_title),
-                style = MaterialTheme.typography.h5.copy(
+                style = MaterialTheme.typography.h6.copy(
                     fontWeight = FontWeight.Medium,
                 ),
             )
