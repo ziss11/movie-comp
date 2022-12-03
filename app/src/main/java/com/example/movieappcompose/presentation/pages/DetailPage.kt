@@ -160,7 +160,7 @@ fun DetailContent(
                         } else {
                             Icons.Default.BookmarkBorder
                         },
-                        tint = MaterialTheme.colors.primary,
+                        tint = MaterialTheme.colors.secondary,
                         contentDescription = stringResource(id = R.string.watchlist_action),
                     )
                 }
