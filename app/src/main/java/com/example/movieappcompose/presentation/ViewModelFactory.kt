@@ -1,5 +1,6 @@
 package com.example.movieappcompose.presentation
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.movieappcompose.Injection.provideGetMovieDetail
@@ -36,13 +37,13 @@ class ViewModelFactory private constructor(
     companion object {
         private var instance: ViewModelFactory? = null
 
-        fun getInstance() = instance ?: synchronized(this) {
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
             instance ?: ViewModelFactory(
-                provideGetTopRatedMovies(),
-                provideGetNowPlayingMovies(),
-                provideGetMovieDetail(),
-                provideGetRecommendedMovies(),
-                provideSearchMovie(),
+                provideGetTopRatedMovies(context),
+                provideGetNowPlayingMovies(context),
+                provideGetMovieDetail(context),
+                provideGetRecommendedMovies(context),
+                provideSearchMovie(context),
             )
         }.also { instance = it }
     }

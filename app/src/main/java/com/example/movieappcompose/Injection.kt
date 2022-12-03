@@ -1,7 +1,12 @@
 package com.example.movieappcompose
 
+import android.content.Context
+import com.example.movieappcompose.data.datasources.MovieLocalDataSource
+import com.example.movieappcompose.data.datasources.MovieLocalDataSourceImpl
 import com.example.movieappcompose.data.datasources.MovieRemoteDataSource
 import com.example.movieappcompose.data.datasources.MovieRemoteDataSourceImpl
+import com.example.movieappcompose.data.datasources.database.MovieDao
+import com.example.movieappcompose.data.datasources.database.MovieDatabase
 import com.example.movieappcompose.data.datasources.service.ApiConfig
 import com.example.movieappcompose.data.datasources.service.ApiService
 import com.example.movieappcompose.data.repositories.MovieRepositoryImpl
@@ -14,34 +19,44 @@ object Injection {
         return ApiConfig.getApiService()
     }
 
+    // database
+    fun provideMovieDao(context: Context): MovieDao {
+        val db = MovieDatabase.getInstance(context)
+        return db.movieDao()
+    }
+
     // data source
-    fun provideMovieRemoteDatasource(): MovieRemoteDataSource {
+    fun provideMovieRemoteDataSource(): MovieRemoteDataSource {
         return MovieRemoteDataSourceImpl.getInstance()
     }
 
+    fun provideMovieLocalDataSource(context: Context): MovieLocalDataSource {
+        return MovieLocalDataSourceImpl.getInstance(context)
+    }
+
     // repositories
-    fun provideMovieRepository(): MovieRepository {
-        return MovieRepositoryImpl.getInstance()
+    fun provideMovieRepository(context: Context): MovieRepository {
+        return MovieRepositoryImpl.getInstance(context)
     }
 
     // use cases
-    fun provideGetMovieDetail(): GetMovieDetail {
-        return GetMovieDetail.getInstance()
+    fun provideGetMovieDetail(context: Context): GetMovieDetail {
+        return GetMovieDetail.getInstance(context)
     }
 
-    fun provideGetNowPlayingMovies(): GetNowPlayingMovies {
-        return GetNowPlayingMovies.getInstance()
+    fun provideGetNowPlayingMovies(context: Context): GetNowPlayingMovies {
+        return GetNowPlayingMovies.getInstance(context)
     }
 
-    fun provideGetTopRatedMovies(): GetTopRatedMovies {
-        return GetTopRatedMovies.getInstance()
+    fun provideGetTopRatedMovies(context: Context): GetTopRatedMovies {
+        return GetTopRatedMovies.getInstance(context)
     }
 
-    fun provideGetRecommendedMovies(): GetRecommendedMovies {
-        return GetRecommendedMovies.getInstance()
+    fun provideGetRecommendedMovies(context: Context): GetRecommendedMovies {
+        return GetRecommendedMovies.getInstance(context)
     }
 
-    fun provideSearchMovie(): SearchMovie {
-        return SearchMovie.getInstance()
+    fun provideSearchMovie(context: Context): SearchMovie {
+        return SearchMovie.getInstance(context)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.movieappcompose.domain.usecase
 
+import android.content.Context
 import com.example.movieappcompose.Injection
 import com.example.movieappcompose.domain.repositories.MovieRepository
 
@@ -9,8 +10,10 @@ class SearchMovie private constructor(private val repository: MovieRepository) {
     companion object {
         private var instance: SearchMovie? = null
 
-        fun getInstance() = instance ?: synchronized(this) {
-            instance ?: SearchMovie(Injection.provideMovieRepository())
+        fun getInstance(context: Context) = instance ?: synchronized(this) {
+            instance ?: SearchMovie(
+                Injection.provideMovieRepository(context)
+            )
         }.also { instance = it }
     }
 }
