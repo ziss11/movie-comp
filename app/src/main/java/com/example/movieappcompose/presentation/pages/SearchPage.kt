@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.*
@@ -48,7 +47,7 @@ fun SearchPage(
                 onClearQuery = {
                     viewModel.searchMovies(newQuery = "")
                 },
-                navigateBack = navigateBack
+                navigateBack = navigateBack,
             )
         },
         modifier = modifier,
@@ -82,27 +81,30 @@ fun SearchTopBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        backgroundColor = MaterialTheme.colors.surface,
+        backgroundColor = Color.Transparent,
         elevation = 0.dp,
-        navigationIcon = {
-            IconButton(
-                onClick = navigateBack,
-            ) {
-                Icon(
-                    Icons.Default.ArrowBackIosNew,
-                    contentDescription = stringResource(id = R.string.go_to_previous_page)
-                )
-            }
-        },
         title = {
             SearchBar(
                 query = query,
                 onQueryChange = onQueryChange,
                 onClearQuery = onClearQuery,
-                modifier = Modifier.padding(end = 16.dp)
+                modifier = Modifier.padding(end = 6.dp)
             )
         },
-        modifier = modifier
+        actions = {
+            TextButton(
+                onClick = navigateBack,
+                modifier = Modifier.padding(end = 16.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    style = MaterialTheme.typography.body1.copy(
+                        color = MaterialTheme.colors.onSurface
+                    ),
+                )
+            }
+        },
+        modifier = modifier.padding(vertical = 8.dp)
     )
 }
 
@@ -114,17 +116,24 @@ fun SearchBar(
     modifier: Modifier = Modifier
 ) {
     TextField(
-        textStyle = MaterialTheme.typography.body2,
+        textStyle = MaterialTheme.typography.body1,
         singleLine = true,
         value = query,
         onValueChange = onQueryChange,
+        colors = TextFieldDefaults.textFieldColors(
+            backgroundColor = MaterialTheme.colors.surface,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent,
+        ),
+        leadingIcon = {
+            Icon(
+                Icons.Rounded.Search,
+                contentDescription = stringResource(id = R.string.search_desc)
+            )
+        },
         trailingIcon = {
-            if (query.isEmpty()) {
-                Icon(
-                    Icons.Rounded.Search,
-                    contentDescription = stringResource(id = R.string.search_desc)
-                )
-            } else {
+            if (query.isNotEmpty()) {
                 IconButton(
                     onClick = onClearQuery,
                 ) {
@@ -135,22 +144,16 @@ fun SearchBar(
                 }
             }
         },
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = MaterialTheme.colors.background,
-            disabledIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-        ),
         placeholder = {
             Text(
                 text = stringResource(id = R.string.query_search_placeholder),
-                style = MaterialTheme.typography.body2
+                style = MaterialTheme.typography.body1
             )
         },
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = 32.dp)
-            .clip(RoundedCornerShape(12.dp))
+            .height(50.dp)
+            .clip(RoundedCornerShape(16.dp))
     )
 }
 
@@ -161,7 +164,7 @@ fun SearchedMoviesContent(
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
-        contentPadding = PaddingValues(vertical = 16.dp),
+        contentPadding = PaddingValues(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
         modifier = modifier.fillMaxWidth(),
     ) {
