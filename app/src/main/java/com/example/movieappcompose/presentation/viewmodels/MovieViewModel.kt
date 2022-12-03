@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieappcompose.BuildConfig
+import com.example.movieappcompose.R
 import com.example.movieappcompose.domain.entities.Movie
 import com.example.movieappcompose.domain.usecase.GetNowPlayingMovies
 import com.example.movieappcompose.domain.usecase.GetTopRatedMovies
@@ -34,11 +35,11 @@ class MovieViewModel(
             topRatedMoviesResult = try {
                 ResultState.Success(getTopRatedMovies.execute(apiKey))
             } catch (e: IOException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } catch (e: HttpException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } finally {
-                ResultState.Error("Data Empty")
+                ResultState.Error
             }
         }
     }
@@ -48,11 +49,11 @@ class MovieViewModel(
             nowPlayingMoviesResult = try {
                 ResultState.Success(getNowPlayingMovies.execute(apiKey))
             } catch (e: IOException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } catch (e: HttpException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } finally {
-                ResultState.Error("Data Empty")
+                ResultState.Error
             }
         }
     }

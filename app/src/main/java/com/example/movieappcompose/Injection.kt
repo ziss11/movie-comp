@@ -59,4 +59,20 @@ object Injection {
     fun provideSearchMovie(context: Context): SearchMovie {
         return SearchMovie.getInstance(context)
     }
+
+    fun provideGetWatchlistMovies(context: Context): GetWatchlistMovies {
+        return GetWatchlistMovies.getInstance(context)
+    }
+
+    fun provideGetWatchlistStatus(context: Context): GetWatchlistStatus {
+        return GetWatchlistStatus.getInstance(context)
+    }
+
+    fun provideAddWatchlistMovie(context: Context): AddWatchlistMovie {
+        return AddWatchlistMovie.getInstance(context)
+    }
+
+    fun provideRemoveWatchlistMovie(context: Context): RemoveWatchlistMovie {
+        return RemoveWatchlistMovie.getInstance(context)
+    }
 }

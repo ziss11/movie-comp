@@ -49,7 +49,9 @@ fun MoviePage(
                         popularMovies = nowPlayingMoviesResult.data,
                         navigateToDetail = navigateToDetail,
                     )
-                    is ResultState.Error -> ErrorScreen()
+                    is ResultState.Error -> ErrorScreen(
+                        text = stringResource(R.string.movie_empty)
+                    )
                     else -> {}
                 }
             }
@@ -73,7 +75,11 @@ fun MoviePage(
                 }
             }
             is ResultState.Error -> {
-                item { ErrorScreen() }
+                item {
+                    ErrorScreen(
+                        text = stringResource(R.string.movie_empty)
+                    )
+                }
             }
             else -> {}
         }

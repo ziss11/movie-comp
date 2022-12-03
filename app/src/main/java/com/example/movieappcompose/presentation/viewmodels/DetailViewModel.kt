@@ -30,11 +30,11 @@ class DetailViewModel(
             movieDetailResult = try {
                 ResultState.Success(getMovieDetail.execute(movieId, apiKey))
             } catch (e: IOException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } catch (e: HttpException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } finally {
-                ResultState.Error("Data Empty")
+                ResultState.Error
             }
         }
     }
@@ -45,11 +45,11 @@ class DetailViewModel(
             recommendationMoviesResult = try {
                 ResultState.Success(getRecommendedMovies.execute(movieId, apiKey))
             } catch (e: IOException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } catch (e: HttpException) {
-                ResultState.Error(e.toString())
+                ResultState.Error
             } finally {
-                ResultState.Error("Data Empty")
+                ResultState.Error
             }
         }
     }

@@ -73,7 +73,9 @@ fun DetailPage(
                     modifier = Modifier.padding(innerPadding)
                 )
             }
-            is ResultState.Error -> ErrorScreen()
+            is ResultState.Error -> ErrorScreen(
+                text = stringResource(R.string.detail_empty)
+            )
             else -> {}
         }
     }
