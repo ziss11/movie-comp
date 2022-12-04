@@ -46,15 +46,6 @@ class MovieAppKtTest {
         navController.assertCurrentRouteName(Screen.About.route)
     }
 
-    @Test
-    fun navHost_clickItem_navigateBackFromDetail() {
-        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
-        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
-        navController.assertCurrentRouteName(Screen.Detail.route)
-        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
-        navController.assertCurrentRouteName(Screen.Movie.route)
-    }
-
     // now playing movie list
     @Test
     fun navHost_clickItemNowPlayingMovie_navigatesToDetailWithData() {
@@ -91,6 +82,16 @@ class MovieAppKtTest {
         composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test)
             .performTextInput("mniangnasdf")
         composeTestRule.onNodeWithStringId(string.search_empty).assertIsDisplayed()
+    }
+
+    // detail
+    @Test
+    fun navHost_cannotLoadDetailMovie() {
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
+        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
+        navController.assertCurrentRouteName(Screen.Movie.route)
     }
 
     // watchlist
