@@ -90,7 +90,7 @@ class MovieAppKtTest {
     fun navHost_searchedMovieNotFound() {
         composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test)
             .performTextInput("mniangnasdf")
-        composeTestRule.onNodeWithTagStringId(string.search_empty).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(string.search_empty).assertIsDisplayed()
     }
 
     // watchlist
