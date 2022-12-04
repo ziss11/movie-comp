@@ -64,7 +64,8 @@ class MovieAppKtTest {
 
     @Test
     fun navHost_clickItemSearchMovie_navigatesToDetailWithData() {
-        composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test).performTextInput("Black Adam")
+        composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test)
+            .performTextInput("Black Adam")
         composeTestRule.onNodeWithTagStringId(string.main_movie_tag_test)
             .performScrollToKey(fakeNowPlayingMovieData.id)
         composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
@@ -82,20 +83,28 @@ class MovieAppKtTest {
     }
 
     @Test
-    fun navHost_clickItem_addToWatchlist(){
+    fun navHost_movieDisplayedAfterAddedToWatchlist() {
         composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
         composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
-        composeTestRule.onNodeContentDescriptionStringId(string.add_watchlist).performClick()
-        composeTestRule.onNodeContentDescriptionStringId(string.remove_watchlist).assertIsDisplayed()
+        composeTestRule.onNodeContentDescriptionStringId(string.watchlist_action).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
+        navController.assertCurrentRouteName(Screen.Movie.route)
+        composeTestRule.onNodeWithStringId(string.watchlist).performClick()
+        navController.assertCurrentRouteName(Screen.Watchlist.route)
+        composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertExists()
     }
 
     @Test
-    fun navHost_clickItem_removeToWatchlist(){
+    fun navHost_movieNotDisplayedAfterRemovedToWatchlist() {
         composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
         composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
-        composeTestRule.onNodeContentDescriptionStringId(string.remove_watchlist).performClick()
-        composeTestRule.onNodeContentDescriptionStringId(string.add_watchlist).assertIsDisplayed()
+        composeTestRule.onNodeContentDescriptionStringId(string.watchlist_action).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
+        navController.assertCurrentRouteName(Screen.Movie.route)
+        composeTestRule.onNodeWithStringId(string.watchlist).performClick()
+        navController.assertCurrentRouteName(Screen.Watchlist.route)
+        composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertDoesNotExist()
     }
 }

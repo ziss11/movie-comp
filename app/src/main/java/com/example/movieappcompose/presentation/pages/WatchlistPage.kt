@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -66,9 +67,9 @@ fun WatchlistContent(
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         contentPadding = PaddingValues(vertical = 16.dp),
-        modifier = modifier,
+        modifier = modifier.testTag(stringResource(id = R.string.watchlist_tag_test)),
     ) {
-        items(watchlistMovies) { item ->
+        items(watchlistMovies, key = { it.id }) { item ->
             MovieTile(
                 imageUrl = item.posterPath ?: "",
                 title = item.title,
