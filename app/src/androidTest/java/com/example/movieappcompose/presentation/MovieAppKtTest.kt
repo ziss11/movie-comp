@@ -6,13 +6,11 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.example.movieappcompose.onNodeWithTagStringId
+import com.example.movieappcompose.*
+import com.example.movieappcompose.R.*
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.utilities.Screen
-import com.example.movieappcompose.R
-import com.example.movieappcompose.assertCurrentRouteName
 import com.example.movieappcompose.domain.entities.Movie
-import com.example.movieappcompose.onNodeWithStringId
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -22,7 +20,7 @@ class MovieAppKtTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var navController: TestNavHostController
 
-    val fakeNowPlayingMovieData = Movie(
+    private val fakeNowPlayingMovieData = Movie(
         id = 436270,
         title = "Black Adam",
         posterPath = "/pFlaoHTZeyNkG83vxsAJiGzfSsa.jpg",
@@ -31,7 +29,7 @@ class MovieAppKtTest {
         unleash his unique form of justice on the modern world.
         """
     )
-    val fakeTopRatedMovieData = Movie(
+    private val fakeTopRatedMovieData = Movie(
         id = 238,
         title = "The Godfather",
         posterPath = "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
@@ -59,17 +57,17 @@ class MovieAppKtTest {
 
     @Test
     fun navHost_bottomNavigation_working() {
-        composeTestRule.onNodeWithStringId(R.string.movie).performClick()
+        composeTestRule.onNodeWithStringId(string.movie).performClick()
         navController.assertCurrentRouteName(Screen.Movie.route)
-        composeTestRule.onNodeWithStringId(R.string.watchlist).performClick()
+        composeTestRule.onNodeWithStringId(string.watchlist).performClick()
         navController.assertCurrentRouteName(Screen.Watchlist.route)
-        composeTestRule.onNodeWithStringId(R.string.about).performClick()
-        navController.assertCurrentRouteName(Screen..route)
+        composeTestRule.onNodeWithStringId(string.about).performClick()
+        navController.assertCurrentRouteName(Screen.About.route)
     }
 
     @Test
     fun navHost_clickItemNowPlayingMovie_navigatesToDetailWithData() {
-        composeTestRule.onNodeWithTagStringId(R.string.now_playing_tag_test).performScrollTo()
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
         composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertIsDisplayed()
@@ -77,7 +75,7 @@ class MovieAppKtTest {
 
     @Test
     fun navHost_clickItemTopRatedMovie_navigatesToDetailWithData() {
-        composeTestRule.onNodeWithTagStringId(R.string.main_movie_tag_test)
+        composeTestRule.onNodeWithTagStringId(string.main_movie_tag_test)
             .performScrollToKey(fakeTopRatedMovieData.id)
         composeTestRule.onNodeWithText(fakeTopRatedMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
@@ -85,12 +83,21 @@ class MovieAppKtTest {
     }
 
     @Test
-    fun navHost_clickItemSearchMovie_navigatesToDetailWithData(){
-        composeTestRule.onNodeWithTagStringId(R.string.search_bar_tag_test).performTextInput("Adam")
-        composeTestRule.onNodeWithTagStringId(R.string.main_movie_tag_test)
+    fun navHost_clickItemSearchMovie_navigatesToDetailWithData() {
+        composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test).performTextInput("Adam")
+        composeTestRule.onNodeWithTagStringId(string.main_movie_tag_test)
             .performScrollToKey(fakeNowPlayingMovieData.id)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertIsDisplayed()
+    }
+
+    @Test
+    fun navHost_clickItem_navigateBackFromDetail() {
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
+        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
+        navController.assertCurrentRouteName(Screen.Movie.route)
     }
 }

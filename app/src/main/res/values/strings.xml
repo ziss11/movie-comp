@@ -8,10 +8,6 @@
     <string name="about">About</string>
     <string name="watchlist">Watchlist</string>
     <string name="search_desc">Search Movies</string>
-    <string name="movie_desc">Movie Page</string>
-    <string name="watchlist_desc">Watchlist Page</string>
-    <string name="about_desc">About Page</string>
-    <string name="detail_desc">Detail Page</string>
     <string name="profile_desc">Profile Image</string>
     <string name="my_name">Abdul Azis</string>
     <string name="my_email">abdul.azizz1108@gmail.com</string>
