@@ -107,4 +107,13 @@ class MovieAppKtTest {
         navController.assertCurrentRouteName(Screen.Watchlist.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertDoesNotExist()
     }
+
+    @Test
+    fun navHost_shouldDisplayProfileContent(){
+        composeTestRule.onNodeWithStringId(string.about).performClick()
+        navController.assertCurrentRouteName(Screen.About.route)
+        composeTestRule.onNodeContentDescriptionStringId(string.profile_desc).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(string.my_name).assertIsDisplayed()
+        composeTestRule.onNodeWithStringId(string.my_email).assertIsDisplayed()
+    }
 }
