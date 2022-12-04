@@ -138,7 +138,7 @@ fun LazyListScope.initialMoviesScreen(
             item { LoadingScreen() }
         }
         is ResultState.Success -> {
-            items(topRatedMoviesResult.data) { item ->
+            items(topRatedMoviesResult.data, key = { it.id }) { item ->
                 TopRatedMovieResultScreen(
                     id = item.id,
                     imageUrl = item.posterPath ?: "",
