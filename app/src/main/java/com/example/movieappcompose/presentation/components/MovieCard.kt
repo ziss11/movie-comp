@@ -32,7 +32,6 @@ fun MovieCard(
         modifier = modifier
             .clickable { onClick() }
             .clip(RoundedCornerShape(12.dp))
-            .height(200.dp)
-            .testTag(contentDescription),
+            .height(200.dp),
     )
 }

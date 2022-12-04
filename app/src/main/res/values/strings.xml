@@ -28,6 +28,7 @@
     <string name="watchlist_action">Add watchlist?</string>
     <string name="now_playing_tag_test">NowPlayingMovieList</string>
     <string name="main_movie_tag_test">MainMovieList</string>
+    <string name="recom_movie_tag_test">MainMovieList</string>
     <string name="search_bar_tag_test">SearchBar</string>
     <string name="watchlist_tag_test">WatchlistMovie</string>
 </resources>

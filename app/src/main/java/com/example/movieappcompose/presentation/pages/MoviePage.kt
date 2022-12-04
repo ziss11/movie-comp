@@ -103,7 +103,9 @@ fun LazyListScope.searchedMoviesScreen(
             title = item.title,
             subtitle = item.overview ?: "",
             onClick = { navigateToDetail(item.id) },
-            modifier = modifier.padding(horizontal = 16.dp).testTag(item.title),
+            modifier = modifier
+                .padding(horizontal = 16.dp)
+                .testTag(item.title),
         )
     }
 }
@@ -121,7 +123,7 @@ fun LazyListScope.initialMoviesScreen(
             when (nowPlayingMoviesResult) {
                 is ResultState.Loading -> LoadingScreen()
                 is ResultState.Success -> NowPlayingMovieResultScreen(
-                    popularMovies = nowPlayingMoviesResult.data,
+                    nowPlayingMovies = nowPlayingMoviesResult.data,
                     navigateToDetail = navigateToDetail,
                     modifier = Modifier.testTag(stringResource(id = R.string.now_playing_tag_test))
                 )
@@ -164,7 +166,7 @@ fun LazyListScope.initialMoviesScreen(
 @Composable
 fun NowPlayingMovieResultScreen(
     navigateToDetail: (Int) -> Unit,
-    popularMovies: List<Movie>,
+    nowPlayingMovies: List<Movie>,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -172,7 +174,7 @@ fun NowPlayingMovieResultScreen(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = modifier,
     ) {
-        items(popularMovies) { item ->
+        items(nowPlayingMovies, key = { it.id }) { item ->
             MovieCard(
                 imageUrl = item.posterPath ?: "",
                 contentDescription = item.title,

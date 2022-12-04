@@ -49,8 +49,9 @@ class MovieAppTest {
     // now playing movie list
     @Test
     fun navHost_clickItemNowPlayingMovie_navigatesToDetailWithData() {
-        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
-        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test)
+            .performScrollToKey(fakeNowPlayingMovieData.id)
+        composeTestRule.onNodeWithContentDescription(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertIsDisplayed()
     }
@@ -86,19 +87,33 @@ class MovieAppTest {
 
     // detail
     @Test
-    fun navHost_cannotLoadDetailMovie() {
-        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
-        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+    fun navHost_navigateBackFromDetail() {
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test)
+            .performScrollToKey(fakeNowPlayingMovieData.id)
+        composeTestRule.onNodeWithContentDescription(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
         navController.assertCurrentRouteName(Screen.Movie.route)
     }
 
+    @Test
+    fun navHost_clickItemRecommendationMovie_navigatesToDetailWithData() {
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test)
+            .performScrollToKey(fakeNowPlayingMovieData.id)
+        composeTestRule.onNodeWithContentDescription(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeWithTagStringId(string.recom_movie_tag_test).performScrollTo()
+        composeTestRule.onNodeWithContentDescription(fakeRecommendedMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeWithText(fakeRecommendedMovieData.title).assertIsDisplayed()
+    }
+
     // watchlist
     @Test
     fun navHost_movieDisplayedAfterAddedToWatchlist() {
-        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
-        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test)
+            .performScrollToKey(fakeNowPlayingMovieData.id)
+        composeTestRule.onNodeWithContentDescription(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeContentDescriptionStringId(string.watchlist_action).performClick()
         composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
@@ -110,8 +125,9 @@ class MovieAppTest {
 
     @Test
     fun navHost_movieNotDisplayedAfterRemovedToWatchlist() {
-        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
-        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test)
+            .performScrollToKey(fakeNowPlayingMovieData.id)
+        composeTestRule.onNodeWithContentDescription(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeContentDescriptionStringId(string.watchlist_action).performClick()
         composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
@@ -123,7 +139,7 @@ class MovieAppTest {
 
     // about
     @Test
-    fun navHost_shouldDisplayProfileContent(){
+    fun navHost_shouldDisplayProfileContent() {
         composeTestRule.onNodeWithStringId(string.about).performClick()
         navController.assertCurrentRouteName(Screen.About.route)
         composeTestRule.onNodeContentDescriptionStringId(string.profile_desc).assertIsDisplayed()

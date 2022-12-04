@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -197,6 +198,9 @@ fun DetailContent(
                             RecommendationMovieContent(
                                 recommendationMovies = data,
                                 navigateToDetail = navigateToDetail,
+                                modifier = Modifier.testTag(
+                                    stringResource(id = R.string.recom_movie_tag_test)
+                                )
                             )
                         } else {
                             ErrorScreen(
@@ -274,7 +278,7 @@ fun RecommendationMovieContent(
         horizontalArrangement = Arrangement.spacedBy(24.dp),
         modifier = modifier,
     ) {
-        items(recommendationMovies) { item ->
+        items(recommendationMovies, key = { it.id }) { item ->
             MovieCard(
                 imageUrl = item.posterPath ?: "",
                 contentDescription = item.title,
