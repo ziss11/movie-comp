@@ -155,7 +155,11 @@ fun DetailContent(
                             Icons.Default.BookmarkBorder
                         },
                         tint = MaterialTheme.colors.secondary,
-                        contentDescription = stringResource(id = R.string.watchlist_action),
+                        contentDescription = if (isAddedToWatchlist) {
+                            stringResource(id = R.string.remove_watchlist)
+                        } else {
+                            stringResource(id = R.string.add_watchlist)
+                        },
                     )
                 }
             }

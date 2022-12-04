@@ -10,7 +10,6 @@ import com.example.movieappcompose.*
 import com.example.movieappcompose.R.*
 import com.example.movieappcompose.presentation.theme.MovieAppComposeTheme
 import com.example.movieappcompose.utilities.Screen
-import com.example.movieappcompose.domain.entities.Movie
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -19,25 +18,6 @@ class MovieAppKtTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
     private lateinit var navController: TestNavHostController
-
-    private val fakeNowPlayingMovieData = Movie(
-        id = 436270,
-        title = "Black Adam",
-        posterPath = "/pFlaoHTZeyNkG83vxsAJiGzfSsa.jpg",
-        overview = """Nearly 5,000 years after he was bestowed with the almighty powers of the Egyptian 
-        gods—and imprisoned just as quickly—Black Adam is freed from his earthly tomb, ready to 
-        unleash his unique form of justice on the modern world.
-        """
-    )
-    private val fakeTopRatedMovieData = Movie(
-        id = 238,
-        title = "The Godfather",
-        posterPath = "/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
-        overview = """Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American 
-        Corleone crime family. When organized crime family patriarch, Vito Corleone barely 
-        survives an attempt on his life, his youngest son, Michael steps in to take care of the 
-        would-be killers, launching a campaign of bloody revenge."""
-    )
 
     @Before
     fun setUp() {
@@ -84,10 +64,10 @@ class MovieAppKtTest {
 
     @Test
     fun navHost_clickItemSearchMovie_navigatesToDetailWithData() {
-        composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test).performTextInput("Adam")
+        composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test).performTextInput("Black Adam")
         composeTestRule.onNodeWithTagStringId(string.main_movie_tag_test)
             .performScrollToKey(fakeNowPlayingMovieData.id)
-        composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).performClick()
+        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertIsDisplayed()
     }
@@ -99,5 +79,23 @@ class MovieAppKtTest {
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
         navController.assertCurrentRouteName(Screen.Movie.route)
+    }
+
+    @Test
+    fun navHost_clickItem_addToWatchlist(){
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
+        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeContentDescriptionStringId(string.add_watchlist).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.remove_watchlist).assertIsDisplayed()
+    }
+
+    @Test
+    fun navHost_clickItem_removeToWatchlist(){
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
+        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeContentDescriptionStringId(string.remove_watchlist).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.add_watchlist).assertIsDisplayed()
     }
 }

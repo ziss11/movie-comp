@@ -103,7 +103,7 @@ fun LazyListScope.searchedMoviesScreen(
             title = item.title,
             subtitle = item.overview ?: "",
             onClick = { navigateToDetail(item.id) },
-            modifier = modifier.padding(horizontal = 16.dp),
+            modifier = modifier.padding(horizontal = 16.dp).testTag(item.title),
         )
     }
 }
