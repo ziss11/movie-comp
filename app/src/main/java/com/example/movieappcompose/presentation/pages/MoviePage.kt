@@ -57,7 +57,9 @@ fun MoviePage(
                 onClearQuery = {
                     viewModel.searchMovies(newQuery = "")
                 },
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .testTag(stringResource(id = R.string.search_bar_tag_test))
             )
         }
         when (searchMoviesResult) {
@@ -95,7 +97,7 @@ fun LazyListScope.searchedMoviesScreen(
     navigateToDetail: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    items(searchedMovies) { item ->
+    items(searchedMovies, key = { it.id }) { item ->
         MovieTile(
             imageUrl = item.posterPath ?: "",
             title = item.title,

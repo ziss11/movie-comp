@@ -12,6 +12,7 @@ import com.example.movieappcompose.utilities.Screen
 import com.example.movieappcompose.R
 import com.example.movieappcompose.assertCurrentRouteName
 import com.example.movieappcompose.domain.entities.Movie
+import com.example.movieappcompose.onNodeWithStringId
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -57,6 +58,16 @@ class MovieAppKtTest {
     }
 
     @Test
+    fun navHost_bottomNavigation_working() {
+        composeTestRule.onNodeWithStringId(R.string.movie).performClick()
+        navController.assertCurrentRouteName(Screen.Movie.route)
+        composeTestRule.onNodeWithStringId(R.string.watchlist).performClick()
+        navController.assertCurrentRouteName(Screen.Watchlist.route)
+        composeTestRule.onNodeWithStringId(R.string.about).performClick()
+        navController.assertCurrentRouteName(Screen..route)
+    }
+
+    @Test
     fun navHost_clickItemNowPlayingMovie_navigatesToDetailWithData() {
         composeTestRule.onNodeWithTagStringId(R.string.now_playing_tag_test).performScrollTo()
         composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
@@ -71,5 +82,15 @@ class MovieAppKtTest {
         composeTestRule.onNodeWithText(fakeTopRatedMovieData.title).performClick()
         navController.assertCurrentRouteName(Screen.Detail.route)
         composeTestRule.onNodeWithText(fakeTopRatedMovieData.title).assertIsDisplayed()
+    }
+
+    @Test
+    fun navHost_clickItemSearchMovie_navigatesToDetailWithData(){
+        composeTestRule.onNodeWithTagStringId(R.string.search_bar_tag_test).performTextInput("Adam")
+        composeTestRule.onNodeWithTagStringId(R.string.main_movie_tag_test)
+            .performScrollToKey(fakeNowPlayingMovieData.id)
+        composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertIsDisplayed()
     }
 }
