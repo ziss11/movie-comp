@@ -4,9 +4,9 @@
     <string name="about_top_bar_title">About Me</string>
     <string name="watchlist_top_bar_title">Watchlist Movie</string>
     <string name="detail_top_bar_title">Movie Details</string>
-    <string name="movie">Movie</string>
-    <string name="about">About</string>
-    <string name="watchlist">Watchlist</string>
+    <string name="movie_page">Movie</string>
+    <string name="about_page">About</string>
+    <string name="watchlist_page">Watchlist</string>
     <string name="search_desc">Search Movies</string>
     <string name="profile_desc">Profile Image</string>
     <string name="my_name">Abdul Azis</string>

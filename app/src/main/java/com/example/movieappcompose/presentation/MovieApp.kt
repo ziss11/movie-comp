@@ -110,17 +110,17 @@ fun BottomBar(
 ) {
     val navigationItems = listOf(
         NavigationItem(
-            title = stringResource(id = R.string.movie),
+            title = stringResource(id = R.string.movie_page),
             icon = Icons.Outlined.Movie,
             screen = Screen.Movie,
         ),
         NavigationItem(
-            title = stringResource(id = R.string.watchlist),
+            title = stringResource(id = R.string.watchlist_page),
             icon = Icons.Outlined.Bookmarks,
             screen = Screen.Watchlist,
         ),
         NavigationItem(
-            title = stringResource(id = R.string.about),
+            title = stringResource(id = R.string.about_page),
             icon = Icons.Outlined.Person,
             screen = Screen.About,
         )

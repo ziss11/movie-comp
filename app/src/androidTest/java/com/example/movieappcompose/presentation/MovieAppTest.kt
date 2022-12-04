@@ -38,11 +38,11 @@ class MovieAppTest {
 
     @Test
     fun navHost_bottomNavigation_working() {
-        composeTestRule.onNodeWithStringId(string.movie).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.movie_page).performClick()
         navController.assertCurrentRouteName(Screen.Movie.route)
-        composeTestRule.onNodeWithStringId(string.watchlist).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.watchlist_page).performClick()
         navController.assertCurrentRouteName(Screen.Watchlist.route)
-        composeTestRule.onNodeWithStringId(string.about).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.about_page).performClick()
         navController.assertCurrentRouteName(Screen.About.route)
     }
 
@@ -118,7 +118,7 @@ class MovieAppTest {
         composeTestRule.onNodeContentDescriptionStringId(string.watchlist_action).performClick()
         composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
         navController.assertCurrentRouteName(Screen.Movie.route)
-        composeTestRule.onNodeWithStringId(string.watchlist).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.watchlist_page).performClick()
         navController.assertCurrentRouteName(Screen.Watchlist.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertExists()
     }
@@ -132,7 +132,7 @@ class MovieAppTest {
         composeTestRule.onNodeContentDescriptionStringId(string.watchlist_action).performClick()
         composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
         navController.assertCurrentRouteName(Screen.Movie.route)
-        composeTestRule.onNodeWithStringId(string.watchlist).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.watchlist_page).performClick()
         navController.assertCurrentRouteName(Screen.Watchlist.route)
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertDoesNotExist()
     }
@@ -140,7 +140,7 @@ class MovieAppTest {
     // about
     @Test
     fun navHost_shouldDisplayProfileContent() {
-        composeTestRule.onNodeWithStringId(string.about).performClick()
+        composeTestRule.onNodeContentDescriptionStringId(string.about_page).performClick()
         navController.assertCurrentRouteName(Screen.About.route)
         composeTestRule.onNodeContentDescriptionStringId(string.profile_desc).assertIsDisplayed()
         composeTestRule.onNodeWithStringId(string.my_name).assertIsDisplayed()
