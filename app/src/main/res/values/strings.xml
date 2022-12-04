@@ -31,4 +31,6 @@
     <string name="detail_empty">Ups. Data could not be loaded</string>
     <string name="add_watchlist">Add movie to watchlist</string>
     <string name="watchlist_action">Add or Remove watchlist</string>
+    <string name="now_playing_tag_test">NowPlayingMovieList</string>
+    <string name="main_movie_tag_test">MainMovieList</string>
 </resources>

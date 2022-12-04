@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +44,9 @@ fun MoviePage(
     LazyColumn(
         contentPadding = PaddingValues(bottom = 16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .testTag(stringResource(id = R.string.main_movie_tag_test)),
     ) {
         item {
             SearchBar(
@@ -115,9 +118,10 @@ fun LazyListScope.initialMoviesScreen(
         ) {
             when (nowPlayingMoviesResult) {
                 is ResultState.Loading -> LoadingScreen()
-                is ResultState.Success -> PopularMovieResultScreen(
+                is ResultState.Success -> NowPlayingMovieResultScreen(
                     popularMovies = nowPlayingMoviesResult.data,
                     navigateToDetail = navigateToDetail,
+                    modifier = Modifier.testTag(stringResource(id = R.string.now_playing_tag_test))
                 )
                 is ResultState.Error -> ErrorScreen(
                     text = stringResource(R.string.movie_empty),
@@ -135,7 +139,7 @@ fun LazyListScope.initialMoviesScreen(
         }
         is ResultState.Success -> {
             items(topRatedMoviesResult.data) { item ->
-                NowPlayingMovieResultScreen(
+                TopRatedMovieResultScreen(
                     id = item.id,
                     imageUrl = item.posterPath ?: "",
                     title = item.title,
@@ -156,7 +160,7 @@ fun LazyListScope.initialMoviesScreen(
 }
 
 @Composable
-fun PopularMovieResultScreen(
+fun NowPlayingMovieResultScreen(
     navigateToDetail: (Int) -> Unit,
     popularMovies: List<Movie>,
     modifier: Modifier = Modifier,
@@ -177,7 +181,7 @@ fun PopularMovieResultScreen(
 }
 
 @Composable
-fun NowPlayingMovieResultScreen(
+fun TopRatedMovieResultScreen(
     id: Int,
     imageUrl: String,
     title: String,
