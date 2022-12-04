@@ -143,12 +143,12 @@ fun LazyListScope.initialMoviesScreen(
         }
         is ResultState.Success -> {
             items(topRatedMoviesResult.data, key = { it.id }) { item ->
-                TopRatedMovieResultScreen(
-                    id = item.id,
+                MovieTile(
                     imageUrl = item.posterPath ?: "",
                     title = item.title,
-                    overview = item.overview ?: "",
-                    navigateToDetail = navigateToDetail,
+                    subtitle = item.overview ?: "",
+                    onClick = { navigateToDetail(item.id) },
+                    modifier = Modifier.padding(horizontal = 16.dp),
                 )
             }
         }
@@ -182,24 +182,6 @@ fun NowPlayingMovieResultScreen(
             )
         }
     }
-}
-
-@Composable
-fun TopRatedMovieResultScreen(
-    id: Int,
-    imageUrl: String,
-    title: String,
-    overview: String,
-    navigateToDetail: (Int) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    MovieTile(
-        imageUrl = imageUrl,
-        title = title,
-        subtitle = overview,
-        onClick = { navigateToDetail(id) },
-        modifier = modifier.padding(horizontal = 16.dp),
-    )
 }
 
 @Preview(
