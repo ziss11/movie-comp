@@ -30,6 +30,7 @@ class MovieAppKtTest {
         }
     }
 
+    // navigation
     @Test
     fun navHost_verifyStartDestination() {
         navController.assertCurrentRouteName(Screen.Movie.route)
@@ -46,6 +47,16 @@ class MovieAppKtTest {
     }
 
     @Test
+    fun navHost_clickItem_navigateBackFromDetail() {
+        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
+        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
+        navController.assertCurrentRouteName(Screen.Detail.route)
+        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
+        navController.assertCurrentRouteName(Screen.Movie.route)
+    }
+
+    // now playing movie list
+    @Test
     fun navHost_clickItemNowPlayingMovie_navigatesToDetailWithData() {
         composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
         composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
@@ -53,6 +64,7 @@ class MovieAppKtTest {
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertIsDisplayed()
     }
 
+    // top rated movie list
     @Test
     fun navHost_clickItemTopRatedMovie_navigatesToDetailWithData() {
         composeTestRule.onNodeWithTagStringId(string.main_movie_tag_test)
@@ -62,6 +74,7 @@ class MovieAppKtTest {
         composeTestRule.onNodeWithText(fakeTopRatedMovieData.title).assertIsDisplayed()
     }
 
+    // searched movie list
     @Test
     fun navHost_clickItemSearchMovie_navigatesToDetailWithData() {
         composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test)
@@ -74,14 +87,13 @@ class MovieAppKtTest {
     }
 
     @Test
-    fun navHost_clickItem_navigateBackFromDetail() {
-        composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
-        composeTestRule.onNodeWithTag(fakeNowPlayingMovieData.title).performClick()
-        navController.assertCurrentRouteName(Screen.Detail.route)
-        composeTestRule.onNodeContentDescriptionStringId(string.go_to_previous_page).performClick()
-        navController.assertCurrentRouteName(Screen.Movie.route)
+    fun navHost_searchedMovieNotFound() {
+        composeTestRule.onNodeWithTagStringId(string.search_bar_tag_test)
+            .performTextInput("mniangnasdf")
+        composeTestRule.onNodeWithTagStringId(string.search_empty).assertIsDisplayed()
     }
 
+    // watchlist
     @Test
     fun navHost_movieDisplayedAfterAddedToWatchlist() {
         composeTestRule.onNodeWithTagStringId(string.now_playing_tag_test).performScrollTo()
@@ -108,6 +120,7 @@ class MovieAppKtTest {
         composeTestRule.onNodeWithText(fakeNowPlayingMovieData.title).assertDoesNotExist()
     }
 
+    // about
     @Test
     fun navHost_shouldDisplayProfileContent(){
         composeTestRule.onNodeWithStringId(string.about).performClick()
