@@ -62,31 +62,35 @@ fun MoviePage(
                     .testTag(stringResource(id = R.string.search_bar_tag_test))
             )
         }
-        when (searchMoviesResult) {
-            is ResultState.Loading -> item { LoadingScreen() }
-            is ResultState.Success -> {
-                val data = (searchMoviesResult as ResultState.Success<List<Movie>>).data
 
-                if (data.isNotEmpty()) {
-                    searchedMoviesScreen(
-                        searchedMovies = data,
-                        navigateToDetail = navigateToDetail,
-                    )
-                } else {
-                    item {
-                        ErrorScreen(
-                            text = stringResource(id = R.string.search_empty),
-                            modifier = Modifier.height(500.dp)
+        if (query.isEmpty()) {
+            initialMoviesScreen(
+                nowPlayingMoviesResult = nowPlayingMoviesResult,
+                topRatedMoviesResult = topRatedMoviesResult,
+                navigateToDetail = navigateToDetail,
+            )
+        } else {
+            when (searchMoviesResult) {
+                is ResultState.Loading -> item { LoadingScreen() }
+                is ResultState.Success -> {
+                    val data = (searchMoviesResult as ResultState.Success<List<Movie>>).data
+
+                    if (data.isNotEmpty()) {
+                        searchedMoviesScreen(
+                            searchedMovies = data,
+                            navigateToDetail = navigateToDetail,
                         )
+                    } else {
+                        item {
+                            ErrorScreen(
+                                text = stringResource(id = R.string.search_empty),
+                                modifier = Modifier.height(500.dp)
+                            )
+                        }
                     }
                 }
-            }
-            else -> {
-                initialMoviesScreen(
-                    nowPlayingMoviesResult = nowPlayingMoviesResult,
-                    topRatedMoviesResult = topRatedMoviesResult,
-                    navigateToDetail = navigateToDetail,
-                )
+
+                else -> {}
             }
         }
     }
@@ -117,8 +121,7 @@ fun LazyListScope.initialMoviesScreen(
 ) {
     item {
         ContentSection(
-            title = "Now Playing",
-            modifier = Modifier.padding(bottom = 16.dp)
+            title = "Now Playing", modifier = Modifier.padding(bottom = 16.dp)
         ) {
             when (nowPlayingMoviesResult) {
                 is ResultState.Loading -> LoadingScreen()
@@ -127,9 +130,9 @@ fun LazyListScope.initialMoviesScreen(
                     navigateToDetail = navigateToDetail,
                     modifier = Modifier.testTag(stringResource(id = R.string.now_playing_tag_test))
                 )
+
                 is ResultState.Error -> ErrorScreen(
-                    text = stringResource(R.string.movie_empty),
-                    modifier = Modifier.height(200.dp)
+                    text = stringResource(R.string.movie_empty), modifier = Modifier.height(200.dp)
                 )
             }
         }
@@ -141,6 +144,7 @@ fun LazyListScope.initialMoviesScreen(
         is ResultState.Loading -> {
             item { LoadingScreen() }
         }
+
         is ResultState.Success -> {
             items(topRatedMoviesResult.data, key = { it.id }) { item ->
                 MovieTile(
@@ -152,11 +156,11 @@ fun LazyListScope.initialMoviesScreen(
                 )
             }
         }
+
         is ResultState.Error -> {
             item {
                 ErrorScreen(
-                    text = stringResource(R.string.movie_empty),
-                    modifier = Modifier.height(200.dp)
+                    text = stringResource(R.string.movie_empty), modifier = Modifier.height(200.dp)
                 )
             }
         }
@@ -185,14 +189,10 @@ fun NowPlayingMovieResultScreen(
 }
 
 @Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    showSystemUi = true
+    showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO, showSystemUi = true
 )
 @Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showSystemUi = true
+    showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, showSystemUi = true
 )
 @Composable
 fun MoviePagePreview() {
